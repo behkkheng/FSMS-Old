@@ -3,10 +3,32 @@
         <div class="card">
             <div class="card-body">
                 <div class="col-12">
+                    <?php
+                        if(isset($_GET["id"])){
+                            
+
+                            $dbhost = "localhost";
+                            $dbuser = "root";
+                            $dbpassword = "";
+                            $dbname = "fsms";
+
+                            if (!$con = mysqli_connect($dbhost,$dbuser,$dbpassword,$dbname))
+                            {
+                                die("Failed to connect the database.");
+                            }
+
+                            $employeeID = mysqli_real_escape_string($con, $_GET['id']);;
+                            $query = "SELECT * FROM employee WHERE employeeID = '$employeeID' ";
+                            $query_run = mysqli_query($con, $query);
+
+                            if(mysqli_num_rows($query_run) > 0)
+                            {
+                                $employee = mysqli_fetch_assoc($query_run);
+                        ?>
                     <form class="needs-validation"
                           novalidate
                           method="post"
-                          action="create_user_func.php">
+                          action="create user.php">
                         <div class="form-row">
                             <div class="form-group col-md-12">
                                 <label for="name">Name</label>
@@ -14,6 +36,7 @@
                                        class="form-control"
                                        id="name"
                                        name="name"
+                                       value="<?= $employee["name"]; ?>"
                                        required>
                                 <div class="invalid-feedback">Name field is required.</div>
                             </div>
@@ -24,6 +47,7 @@
                                 <input type="text"
                                        class="form-control"
                                        id="hpNo"
+                                       value="<?= $employee["hpNo"]; ?>"
                                        name="hpNo">
                             </div>
                         </div>
@@ -34,6 +58,7 @@
                                        class="form-control"
                                        id="username"
                                        name="username"
+                                       value="<?= $employee["username"]; ?>"
                                        required>
                                 <div class="invalid-feedback">Username field is required.</div>
                             </div>
@@ -52,6 +77,7 @@
                             <textarea class="form-control"
                                       id="inputAddress"
                                       rows="3"
+                                      value="<?= $employee["address"]; ?>"
                                       name="address"></textarea>
                         </div>
                         <div class="form-row">
@@ -60,12 +86,14 @@
                                 <input type="text"
                                        class="form-control"
                                        id="inputCity"
+                                       value="<?= $employee["city"]; ?>"
                                        name="city">
                             </div>
                             <div class="form-group col-md-4">
                                 <label for="inputState">State</label>
                                 <select id="inputState"
                                         class="custom-select"
+                                        value="<?= $employee["state"]; ?>"
                                         name="state">
                                     <option selected
                                             value="">Choose...</option>
@@ -91,6 +119,7 @@
                                 <input type="text"
                                        class="form-control"
                                        id="inputPostcode"
+                                       value="<?= $employee["postcode"]; ?>"
                                        name="postcode">
                             </div>
                         </div>
@@ -100,6 +129,7 @@
                                 <select id="role"
                                         class="custom-select"
                                         name="role"
+                                        value="<?= $employee["role"]; ?>"
                                         required>
                                     <option selected
                                             value="">Choose...</option>
@@ -110,8 +140,16 @@
                             </div>
                         </div>
                         <button type="submit"
-                                class="btn btn-primary">Create</button>
+                                class="btn btn-primary">Save</button>
                     </form>
+                    <?php
+                        }
+                        else
+                        {
+                            echo "<h4>No Such Id Found</h4>";
+                        }
+                    }
+                    ?>
                 </div>
             </div>
         </div>
@@ -142,4 +180,3 @@
         }, false);
     })();
 </script>
-<!-- /.content -->

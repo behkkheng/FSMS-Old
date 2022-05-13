@@ -1,8 +1,37 @@
 <?php
     session_start();
 
-    include("dbConnection.php");
-    include("functions.php");
+    $dbhost = "localhost";
+    $dbuser = "root";
+    $dbpassword = "";
+    $dbname = "fsms";
+
+    if (!$con = mysqli_connect($dbhost,$dbuser,$dbpassword,$dbname))
+    {
+        die("Failed to connect the database.");
+    }
+    
+    function check_login($con)
+    {
+
+        if(isset($_SESSION['user_id']))
+        {
+            $id = $_SESSION['user_id'];
+            $query = "select * from employee where employeeID = '$id' limit 1";
+
+            $result = mysqli_query($con,$query);
+            if($result && mysqli_num_rows($result) > 0)
+            {
+                $user_data = mysqli_fetch_assoc($result);
+
+                return $user_data;
+            }
+        }
+
+        //redirect to login
+        header("Location: login.php");
+        die;
+    }
 
     if($_SERVER['REQUEST_METHOD'] == 'POST'){
         //Something was posted
@@ -40,7 +69,7 @@
                             setcookie("username","");
                             setcookie("password","");
                         }
-                        header("Location: home.php");
+                        header("Location: Dashboard/Dashboard.php");
                         die;
                     }else{
                         echo '<script>alert("Invalid password or username.")</script>';
