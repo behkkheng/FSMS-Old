@@ -18,5 +18,6 @@
         $stmt->bind_param("sssssssss",$name,$hpNo,$username,$password,$address,$city,$state,$postcode,$role);
         $stmt->execute();
         echo '<script>alert("User created successfully!")</script>';
+        header("Location: User-Index.php");
     }
 ?>

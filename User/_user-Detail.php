@@ -74,11 +74,11 @@
                 </button>
             </div>
 
-            <form action="delete user.php" method="POST">
+            <form action="other_user_func.php" method="POST">
 
                 <div class="modal-body">
 
-                    <input type="hidden" name="delete_id" id="delete_id delete_name">
+                    <input type="hidden" name="delete_id" id="delete_id">
 
                     <h5 class="text-center"> Are you sure want to delete?</h5>
                 </div>
@@ -108,7 +108,6 @@
             console.log(data);
 
             $('#delete_id').val(data[0]);
-            $('#delete_name').val(data[1]);
         });
     });
 </script>

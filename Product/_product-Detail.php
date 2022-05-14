@@ -1,61 +1,68 @@
 <div class="card">
     <div class="card-body">
         <dl class="row">
-            <?php
-            $id = $_GET['id'];
+            <div class="col-12 col-sm-6">
+                <?php
+                $id = $_GET['id'];
 
-            $servername = "localhost";
-            $username = "root";
-            $password = "";
-            $dbname = "fsms";
+                $servername = "localhost";
+                $username = "root";
+                $password = "";
+                $dbname = "fsms";
 
-            // Create connection
-            $conn = new mysqli($servername, $username, $password, $dbname);
-            // Check connection
-            if ($conn->connect_error) {
-                die("Connection failed: " . $conn->connect_error);
-            }
+                // Create connection
+                $conn = new mysqli($servername, $username, $password, $dbname);
+                // Check connection
+                if ($conn->connect_error) {
+                    die("Connection failed: " . $conn->connect_error);
+                }
 
-            $sql = "SELECT * FROM employee WHERE employeeID = $id";
-            $result = $conn->query($sql);
-            if ($result->num_rows > 0) {
-                $row = mysqli_fetch_array($result);
-                // output data of each row
-                echo '
-                    <dt class="col-sm-2">Name: </dt>
-                    <dd class="col-sm-10">' . $row["name"] . '</dd>
-                    <dt class="col-sm-2">Username: </dt>
-                    <dd class="col-sm-10">' . $row["username"] . '</dd>
-                    <dt class="col-sm-2">Handphone Number: </dt>
-                    <dd class="col-sm-10">' . $row["hpNo"] . '</dd>
-                    <dt class="col-sm-2">Address: </dt>
-                    <dd class="col-sm-10">' . $row["address"] . '</dd>
-                    <dt class="col-sm-2">City: </dt>
-                    <dd class="col-sm-10">' . $row["city"] . '</dd>
-                    <dt class="col-sm-2">State: </dt>
-                    <dd class="col-sm-10">' . $row["state"] . '</dd>
-                    <dt class="col-sm-2">Postcode: </dt>
-                    <dd class="col-sm-10">' . $row["postcode"] . '</dd>
-                    <dt class="col-sm-2">Role: </dt>
-                    <dd class="col-sm-10">' . $row["role"] . '</dd>';
-            } else {
-                echo "0 results";
-            }
-            $conn->close();
-            ?>
+                $sql = "SELECT * FROM product WHERE productID = $id";
+                $result = $conn->query($sql);
+                if ($result->num_rows > 0) {
+                    $row = mysqli_fetch_array($result);
+                    // output data of each row
+                    echo '
+                <h3 class="d-inline-block d-sm-none">
+                ' . $row["name"] . '
+                </h3>
+                <div class="col-12">';
+                    echo '<img class="img-thumbnail" src="' . $row["productPath"] . '"/>
+
+                </div>
+                
+            </div>
+            <div class="col-12 col-sm-6">
+                <h3 class="my-3">' . $row["name"] . '</h3>
+                <p>' . $row["description"] . '</p>
+
+                <hr>
+
+                <div class="bg-gray py-2 px-3 mt-4">
+                    <h2 class="mb-0">' . $row["price"] . '</h2>
+                </div>';
+                } else {
+                    echo "0 results";
+                }
+                ?>
+
+                <div class="row">
+                    <form action="\FSMS\Product\Product-Edit.php" method="get">
+                        <input type="hidden" value="<?php echo $row['productID']; ?>" name="id">
+                        <button type="submit" class="btn btn-info btn-sm m-1 editbtn"><i class="fas fa-pencil-alt"></i> Edit </button>
+                    </form>
+
+                    <form>
+                        <input type="hidden" value="<?php echo $row["productID"]; ?>" name="id">
+                        <button type="button" class="btn btn-danger deletebtn btn-sm m-1"><i class="fas fa-trash"></i> Delete </button>
+                    </form>
+                </div>
+
+            </div>
+
         </dl>
 
-        <div class="row">
-            <form action="\FSMS\User\User-Edit.php" method="get">
-                <input type="hidden" value="<?php echo $row['employeeID']; ?>" name="id">
-                <button type="submit" class="btn btn-info btn-sm m-1 editbtn"><i class="fas fa-pencil-alt"></i> Edit </button>
-            </form>
 
-            <form class="">
-                <input type="hidden" value="<?php echo $row['employeeID']; ?>" name="id">
-                <button type="button" class="btn btn-danger deletebtn btn-sm m-1"><i class="fas fa-trash"></i> Delete </button>
-            </form>
-        </div>
 
     </div>
 
@@ -68,17 +75,17 @@
     <div class="modal-dialog modal-dialog-centered" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 style="font-weight: bold;" class="modal-title" id="exampleModalLabel"> Delete Employee Data </h5>
+                <h5 style="font-weight: bold;" class="modal-title" id="exampleModalLabel"> Delete Product Data </h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
 
-            <form action="delete user.php" method="POST">
+            <form action="other_product_func.php" method="POST">
 
                 <div class="modal-body">
 
-                    <input type="hidden" name="delete_id" id="delete_id delete_name">
+                    <input type="hidden" name="delete_id" id="delete_id">
 
                     <h5 class="text-center"> Are you sure want to delete?</h5>
                 </div>
@@ -91,6 +98,8 @@
         </div>
     </div>
 </div>
+
+
 
 <script>
     $(document).ready(function() {
@@ -108,7 +117,6 @@
             console.log(data);
 
             $('#delete_id').val(data[0]);
-            $('#delete_name').val(data[1]);
         });
     });
 </script>

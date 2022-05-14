@@ -12,7 +12,7 @@
     <!-- Google Font: Source Sans Pro -->
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
     <!-- Font Awesome Icons -->
-    <link rel="stylesheet" href="../lib/fontawesome-free/css/all.min.css">
+    <link rel="stylesheet" href="/FSMS/lib/fontawesome-free/css/all.min.css">
     <link rel="stylesheet" href="../lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="../lib/jquery-ui-1.13.0.custom/jquery-ui.min.css" />
     <link rel="stylesheet" href="../lib/sweetalert2/sweetalert2.min.css" />

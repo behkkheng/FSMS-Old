@@ -4,7 +4,7 @@
             <div class="card-header">
                 <div class="row">
                     <div class="col-md-6 offset-md-6">
-                        <a class="btn btn-primary float-right" href="User-Create.html" role="button">New User</a>
+                        <a class="btn btn-primary float-right" href="User-Create.php" role="button">New User</a>
                     </div>
                 </div>
             </div>

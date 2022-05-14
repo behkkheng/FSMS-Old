@@ -28,6 +28,9 @@ if(isset($_POST['delete_id']))
     }
 }
 
+
+
+
 if(isset($_POST['update']))
 {
     $employee_id = mysqli_real_escape_string($con, $_POST['employee_id']);

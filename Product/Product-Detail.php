@@ -5,6 +5,6 @@
         echo '<li class="breadcrumb-item">Products</li>';
         echo '<li class="breadcrumb-item active">Detail</li>';
     }
-    $childView = '_products-Detail.php';
+    $childView = '_product-Detail.php';
     include('../shared_layout.php');
 ?>

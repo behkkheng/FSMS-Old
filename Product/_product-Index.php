@@ -4,7 +4,7 @@
             <div class="card-header">
                 <div class="row">
                     <div class="col-md-6 offset-md-6">
-                        <a class="btn btn-primary float-right" href="Product-Create.html" role="button">New User</a>
+                        <a class="btn btn-primary float-right" href="Product-Create.php" role="button">New Product</a>
                     </div>
                 </div>
             </div>
@@ -19,7 +19,7 @@
             // Create connection
             $connection = new mysqli($servername, $username, $password, $dbname);
 
-            $query = "SELECT * FROM employee";
+            $query = "SELECT * FROM product";
             $query_run = mysqli_query($connection, $query);
             ?>
             <table id="datatableid" class="table">
@@ -88,11 +88,11 @@
                                 </button>
                             </div>
 
-                            <form action="delete_product_func.php" method="POST">
+                            <form action="other_product_func.php" method="POST">
 
                                 <div class="modal-body">
 
-                                    <input type="hidden" name="delete_id" id="delete_id delete_name">
+                                    <input type="hidden" name="delete_id" id="delete_id">
 
                                     <h5 class="text-center"> Are you sure want to delete?</h5>
                                 </div>
@@ -128,7 +128,6 @@
             console.log(data);
 
             $('#delete_id').val(data[0]);
-            $('#delete_name').val(data[1]);
         });
     });
 </script>
