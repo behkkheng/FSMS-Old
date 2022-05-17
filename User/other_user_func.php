@@ -16,13 +16,11 @@ if(isset($_POST['delete_id']))
 
     if($query_run)
     {
-        $_SESSION['message'] = "Employee Deleted Successfully";
         header("Location: User-Index.php");
         exit(0);
     }
     else
     {
-        $_SESSION['message'] = "Employee Not Deleted";
         header("Location: User-Index.php");
         exit(0);
     }
@@ -50,13 +48,11 @@ if(isset($_POST['update']))
 
     if($query_run)
     {
-        $_SESSION['message'] = "Student Updated Successfully";
         header("Location: User-Index.php");
         exit(0);
     }
     else
     {
-        $_SESSION['message'] = "Student Not Updated";
         header("Location: User-Index.php");
         exit(0);
     }

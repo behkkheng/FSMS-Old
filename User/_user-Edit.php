@@ -51,7 +51,7 @@
                                 </div>
                                 <div class="form-group">
                                     <label for="inputAddress">Address</label>
-                                    <textarea class="form-control" id="inputAddress" rows="3" value="<?= $employee["address"]; ?>" name="address"></textarea>
+                                    <textarea class="form-control" id="inputAddress" rows="3" name="address"><?= $employee["address"]; ?></textarea>
                                 </div>
                                 <div class="form-row">
                                     <div class="form-group col-md-4">
@@ -62,21 +62,21 @@
                                         <label for="inputState">State</label>
                                         <select id="inputState" class="custom-select" value="<?= $employee["state"]; ?>" name="state">
                                             <option selected value="">Choose...</option>
-                                            <option value="Kedah">Kedah</option>
-                                            <option value="Penang">Penang</option>
-                                            <option value="Kelantan">Kelantan</option>
-                                            <option value="Perak">Perak</option>
-                                            <option value="Pahang">Pahang</option>
-                                            <option value="Melaka">Melaka</option>
-                                            <option value="Selangor">Selangor</option>
-                                            <option value="Terengganu">Terengganu</option>
-                                            <option value="Johor">Johor</option>
-                                            <option value="Perlis">Perlis</option>
-                                            <option value="Sarawak">Sarawak</option>
-                                            <option value="Sabah">Sabah</option>
-                                            <option value="Kuala Lumpur">Kuala Lumpur</option>
-                                            <option value="Putrajaya">Putrajaya</option>
-                                            <option value="Labuan">Labuan</option>
+                                            <option value="Kedah" <?php if ($employee["state"] == 'Kedah') echo ' selected="selected"'; ?>>Kedah</option>
+                                            <option value="Penang" <?php if ($employee["state"] == 'Penang') echo ' selected="selected"'; ?>>Penang</option>
+                                            <option value="Kelantan" <?php if ($employee["state"] == 'Kelantan') echo ' selected="selected"'; ?>>Kelantan</option>
+                                            <option value="Perak" <?php if ($employee["state"] == 'Perak') echo ' selected="selected"'; ?>>Perak</option>
+                                            <option value="Pahang" <?php if ($employee["state"] == 'Pahang') echo ' selected="selected"'; ?>>Pahang</option>
+                                            <option value="Melaka" <?php if ($employee["state"] == 'Melaka') echo ' selected="selected"'; ?>>Melaka</option>
+                                            <option value="Selangor" <?php if ($employee["state"] == 'Selangor') echo ' selected="selected"'; ?>>Selangor</option>
+                                            <option value="Terengganu" <?php if ($employee["state"] == 'Terengganu') echo ' selected="selected"'; ?>>Terengganu</option>
+                                            <option value="Johor" <?php if ($employee["state"] == 'Johor') echo ' selected="selected"'; ?>>Johor</option>
+                                            <option value="Perlis" <?php if ($employee["state"] == 'Perlis') echo ' selected="selected"'; ?>>Perlis</option>
+                                            <option value="Sarawak" <?php if ($employee["state"] == 'Sarawak') echo ' selected="selected"'; ?>>Sarawak</option>
+                                            <option value="Sabah" <?php if ($employee["state"] == 'Sabah') echo ' selected="selected"'; ?>>Sabah</option>
+                                            <option value="Kuala Lumpur" <?php if ($employee["state"] == 'Kuala Lumpur') echo ' selected="selected"'; ?>>Kuala Lumpur</option>
+                                            <option value="Putrajaya" <?php if ($employee["state"] == 'Putrajaya') echo ' selected="selected"'; ?>>Putrajaya</option>
+                                            <option value="Labuan" <?php if ($employee["state"] == 'Labuan') echo ' selected="selected"'; ?>>Labuan</option>
                                         </select>
                                     </div>
                                     <div class="form-group col-md-4">
@@ -89,8 +89,8 @@
                                         <label for="role">Roles</label>
                                         <select id="role" class="custom-select" name="role" value="<?= $employee["role"]; ?>" required>
                                             <option selected value="">Choose...</option>
-                                            <option value="Staff">Staff</option>
-                                            <option value="Manager">Manager</option>
+                                            <option value="Staff" <?php if ($employee["role"] == 'Staff') echo ' selected="selected"'; ?>>Staff</option>
+                                            <option value="Manager" <?php if ($employee["role"] == 'Manager') echo ' selected="selected"'; ?>>Manager</option>
                                         </select>
                                         <div class="invalid-feedback">Please select a role.</div>
                                     </div>

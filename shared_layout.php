@@ -1,9 +1,10 @@
 <?php
-    session_start();
+session_start();
 ?>
 
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -21,6 +22,7 @@
     <link rel="stylesheet" href="../css/adminlte.min.css">
 
 </head>
+
 <body class="hold-transition sidebar-mini">
 
     <!--script-->
@@ -29,7 +31,6 @@
     <script src="../lib/jquery-ui-1.13.0.custom/jquery-ui.min.js" async></script>
     <script src="../js/adminlte.min.js" async></script>
     <script src="../lib/sweetalert2/sweetalert2.min.js" async></script>
-
 
     <header>
         <!-- Navbar -->
@@ -47,8 +48,7 @@
         <aside class="main-sidebar sidebar-dark-primary elevation-4">
             <!-- Brand Logo -->
             <a href="home.php" class="brand-link">
-                <img src="../images/logo.png" alt="Prototype Logo" class="brand-image img-circle elevation-3"
-                     style="opacity: .8">
+                <img src="../images/logo.png" alt="Prototype Logo" class="brand-image img-circle elevation-3" style="opacity: .8">
                 <span class="brand-text font-weight-light">FSMS</span>
             </a>
 
@@ -66,8 +66,7 @@
 
                 <!-- Sidebar Menu -->
                 <nav class="mt-2">
-                    <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu"
-                        data-accordion="false">
+                    <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
                         <li class="nav-item">
                             <a href="/FSMS/Dashboard/Dashboard.php" class="nav-link">
                                 <p>
@@ -75,6 +74,20 @@
                                     Dashboard
                                 </p>
                             </a>
+                            <table>
+                                <?php
+                                foreach ($_SESSION as $key => $value) {
+                                    echo "<tr style='color:white;'>";
+                                    echo "<td style='color:white;'>";
+                                    echo $key;
+                                    echo "</td>";
+                                    echo "<td style='color:white;'>";
+                                    echo $value;
+                                    echo "</td>";
+                                    echo "</tr>";
+                                }
+                                ?>
+                                </table>
                         </li>
                         <li class="nav-item">
                             <a href="#" class="nav-link">
@@ -92,7 +105,7 @@
                                     </a>
                                 </li>
                                 <li class="nav-item">
-                                    <a href="" class="nav-link">
+                                    <a href="/FSMS/Invoice/Invoice-Index.php" class="nav-link">
                                         <i class="ml-4 fas fa-file-invoice nav-icon"></i>
                                         <p>Invoice</p>
                                     </a>
@@ -116,14 +129,57 @@
                                 <i class="nav-icon fas fa-cubes"></i>
                                 <p>Products</p>
                             </a>
+                            <table>
+                                <?php
+
+
+                                foreach ($_POST as $key => $value) {
+                                    echo "<tr style='color:white;'>";
+                                    echo "<td style='color:white;'>";
+                                    echo $key;
+                                    echo "</td>";
+                                    echo "<td style='color:white;'>";
+                                    echo $value;
+                                    echo "</td>";
+                                    echo "</tr>";
+                                }
+
+
+                                ?>
+                            </table>
                         </li>
+
+                        <?php
+                        if ($_SESSION['role'] == "Manager") {
+                            echo '<li class="nav-item pointer">
+                                <a href="/FSMS/User/User-Index.php" class="nav-link">
+                                    <p>
+                                        <i class="nav-icon fas fa-user"></i>
+                                        User
+                                    </p>
+                                </a>
+                            </li>';
+                        } else {
+                            echo '<li class="nav-item pointer">
+                                <a data-target="#user-modal" data-toggle="modal" class="nav-link">
+                                    <p>
+                                        <i class="nav-icon fas fa-user"></i>
+                                        User
+                                    </p>
+                                </a>
+                            </li>';
+                        }
+                        ?>
+
                         <li class="nav-item pointer">
-                            <a data-target="#user-modal" data-toggle="modal" class="nav-link">
+                            <a href="/FSMS/Customer/Customer-Index.php" class="nav-link">
                                 <p>
-                                <i class="nav-icon fas fa-user"></i>
-                                    User</p>
+                                    <i class="nav-icon fas fa-user-edit"></i>
+                                    Customer
+                                </p>
                             </a>
                         </li>
+
                         <li class="nav-item">
                             <a href="/FSMS/logout_func.php" class="nav-link">
                                 <i class="nav-icon fas fa-sign-out-alt"></i>
@@ -131,6 +187,24 @@
                                     Log Out
                                 </p>
                             </a>
+                            <table>
+                                <?php
+
+
+                                foreach ($_GET as $key => $value) {
+                                    echo "<tr style='color:white;'>";
+                                    echo "<td style='color:white;'>";
+                                    echo $key;
+                                    echo "</td>";
+                                    echo "<td style='color:white;'>";
+                                    echo $value;
+                                    echo "</td>";
+                                    echo "</tr>";
+                                }
+
+
+                                ?>
+                            </table>
                         </li>
                     </ul>
                 </nav>
@@ -153,8 +227,8 @@
                     </div><!-- /.col -->
                     <div class="col-sm-6">
                         <ol class="breadcrumb float-sm-right">
-                            <?php 
-                                breadcrumb();
+                            <?php
+                            breadcrumb();
                             ?>
                         </ol>
                     </div><!-- /.col -->
@@ -165,13 +239,13 @@
 
         <div class="content">
             <div class="container-fluid">
-                
-            <!--Content-->
-            <?php include($childView); ?>
+
+                <!--Content-->
+                <?php include($childView); ?>
 
             </div>
         </div>
-             
+
     </div>
 
     <footer class="main-footer no-print">
@@ -179,6 +253,7 @@
             &copy; 2022 - FSMS - <a href="/FSMS/Privacy/Privacy.php">Privacy</a>
         </div>
     </footer>
+
 
     <div class="modal fade" id="sales-modal" tabindex="-1" role="dialog" aria-labelledby="DeleteModalTitle" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered modal-sm" role="document">
@@ -194,7 +269,7 @@
                     <span>Only Manager allowed to access.</span>
                 </div>
                 <div class="modal-footer">
-                    <a class="btn btn-primary" href="@Url.Action("Index", "SalesReport")">Ok</a>
+                    <a class="btn btn-primary" href="@Url.Action(" Index", "SalesReport" )">Ok</a>
                 </div>
             </div>
         </div>
@@ -214,7 +289,7 @@
                     <span>Only Manager allowed to access.</span>
                 </div>
                 <div class="modal-footer">
-                    <a class="btn btn-primary" href="/FSMS/User/User-Index.php">Ok</a>
+                    <a class="btn btn-primary" data-dismiss="modal" class="close" style="color:white">Ok</a>
                 </div>
             </div>
         </div>
@@ -222,6 +297,5 @@
 
 
 </body>
-</html>
 
-   
+</html>
