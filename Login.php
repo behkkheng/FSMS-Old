@@ -159,19 +159,6 @@
     <!-- AdminLTE App -->
     <script src="js/adminlte.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
-    <script type="text/javascript">
-        //$('#login').submit(function (e) {
-        //    let email = document.getElementById('Email').value;
-        //    let password = document.getElementById('Password').value;
-        //    if (email !== 'manager' || password !== "12345") {
-        //        $('#login').submit();
-        //    } else {
-        //        e.preventDefault();
-        //        setCookie();
-        //    }
-        //})
-    </script>
-
 
 </body>
 </html>

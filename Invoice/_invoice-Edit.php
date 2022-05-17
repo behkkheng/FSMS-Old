@@ -7,15 +7,15 @@ $dbname = "fsms";
 // Create connection
 $connection = new mysqli($servername, $username, $password, $dbname);
 
-$get_current_invoiceID = "SELECT MAX(invoiceID) FROM `invoice`";
-$run_query = mysqli_query($connection, $get_current_invoiceID);
+$invoiceID = $_GET['id'];
+$get_invoice_query = "SELECT * FROM `invoice` WHERE invoiceID='$invoiceID'";
+$run_query = mysqli_query($connection, $get_invoice_query);
 $invoice = mysqli_fetch_assoc($run_query);
-if (isset($invoice)) {
-    $invoiceID = $invoice["MAX(invoiceID)"] + 1;
-} else {
-    $invoiceID = "0";
-}
 
+if ($_SESSION['run_one_time'] == 1) {
+    $_SESSION['invoice_customerID'] = $invoice['customerID'];
+    $_SESSION['run_one_time'] = 2;
+}
 ?>
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
@@ -113,9 +113,17 @@ if (isset($invoice)) {
                                 <label for="datepicker" class="col-md-6 col-form-label">Date: </label>
 
                                 <div class="col-sm-6">
-                                    <?php $today_date = date("Y-m-d"); ?>
+                                    <?php
+                                    $today_date = date("Y-m-d");
+                                    $date = $invoice['date'];
 
-                                    <input type="text" class="form-control form-control-sm mol-md-6" id="datepicker" value="<?php echo $today_date; ?>" name="date" required>
+                                    if (isset($date)) {
+                                        $date = $today_date;
+                                    }
+
+                                    ?>
+
+                                    <input type="text" class="form-control form-control-sm" id="datepicker " value="<?php echo $date; ?>" name="date" required>
                                     <div class="invalid-feedback">Date is required.</div>
                                 </div>
 
@@ -167,7 +175,7 @@ if (isset($invoice)) {
                                 ?>
 
                                         <tbody>
-                                            <tr>
+                                            <tr class="align-middle">
                                                 <!--index number-->
                                                 <td> <?php echo $index_number; ?> </td>
 
@@ -201,7 +209,7 @@ if (isset($invoice)) {
                                                 <td>
                                                     <form action="" method="post">
                                                         <input type="hidden" value="<?php echo $row['invoiceDetailID']; ?>" name="id">
-                                                        <button type="submit" class="btn btn-danger btn-sm m-1 editbtn" name="deleteInvoiceDetail"><i class="fas fa-trash"></i> Delete </button>
+                                                        <button type="submit" class="btn btn-danger btn-sm m-1 editbtn mt-0" name="deleteInvoiceDetail"><i class="fas fa-trash"></i> Delete </button>
                                                     </form>
                                                 </td>
 
@@ -289,8 +297,8 @@ if (isset($invoice)) {
                                 Create Invoice
                               </button>';
                         } else if (isset($already_have_invoice_detail_query) && isset($_SESSION['invoice_customerID'])) {
-                            echo '<button type="submit" name="createInvoice" class="btn btn-success float-right">
-                            <i class="fas fa-save"></i> Create Invoice
+                            echo '<button type="submit" name="editInvoice" class="btn btn-success float-right">
+                            <i class="fas fa-save"></i> Save
                             </button>';
                         }
                         ?>
@@ -362,7 +370,7 @@ if (isset($invoice)) {
                             <label for="product_name">Product</label>
                             <select class="form-control" id="product_name" name="product">
                                 <?php
-                                $show_product_name_query = "SELECT name, productID FROM product";
+                                $show_product_name_query = "SELECT name, quantity, productID FROM product";
                                 $query_run = mysqli_query($connection, $show_product_name_query);
 
                                 if ($query_run) {
@@ -381,7 +389,7 @@ if (isset($invoice)) {
                             <label for="exampleFormControlSelect1">Quantity</label>
                             <select class="form-control" id="exampleFormControlSelect1" name="quantity">
                                 <?php
-                                for ($i = 1; $i < 100; $i++) {
+                                for ($i = 1; $i < $product_names['quantity']; $i++) {
                                     echo "<option>$i</option>";
                                 }
                                 ?>
@@ -540,6 +548,7 @@ if (isset($invoice)) {
 </div>
 <!-- /.modal -->
 
+<!--script for form validation-->
 <script>
     // Example starter JavaScript for disabling form submissions if there are invalid fields
     (function() {
@@ -561,6 +570,27 @@ if (isset($invoice)) {
     })();
 </script>
 
+<!--script for form validation-->
+<script>
+    // Example starter JavaScript for disabling form submissions if there are invalid fields
+    (function() {
+        'use strict';
+        window.addEventListener('load', function() {
+            // Fetch all the forms we want to apply custom Bootstrap validation styles to
+            var forms = document.getElementsByClassName('needs-validation');
+            // Loop over them and prevent submission
+            var validation = Array.prototype.filter.call(forms, function(form) {
+                form.addEventListener('submit', function(event) {
+                    if (form.checkValidity() === false) {
+                        event.preventDefault();
+                        event.stopPropagation();
+                    }
+                    form.classList.add('was-validated');
+                }, false);
+            });
+        }, false);
+    })();
+</script>
 
 <?php
 if (isset($_POST['addInvoiceDetail'])) {
@@ -609,22 +639,21 @@ if (isset($_POST['addCustomer'])) {
     echo "<meta http-equiv='refresh' content='0'>";
 }
 
-if (isset($_POST['createInvoice'])) {
+if (isset($_POST['editInvoice'])) {
     $date = $_POST['date'];
     $customerID = $_SESSION['invoice_customerID'];
     $total_amount = $_POST['total_amount'];
     $cancel_status = "Not Cancel";
 
-    $create_invoice_query = "INSERT INTO `invoice` (`date`, `customerID`, `total_amount`, `cancel_status`) VALUES ('$date', '$customerID', '$total_amount', '$cancel_status')";
-    $run_query = mysqli_query($connection, $create_invoice_query);
+    $edit_invoice_query = "UPDATE `invoice` SET `date` = '$date', `customerID` = '$customerID', `total_amount` = '$total_amount' WHERE `invoiceID` = '$invoiceID'";;
+    $run_query = mysqli_query($connection, $edit_invoice_query);
 
     if ($run_query) {
-        $_SESSION['invoice_customerID'] = "";                                   
+        $_SESSION['invoice_customerID'] = "";
         echo ("<script>location.href = 'Invoice-Index.php';</script>");
         exit();
     } else {
         $_SESSION['invoice_customerID'] = "";
-        echo "Cannot save data.";
     }
 }
 ?>

@@ -1,6 +1,6 @@
 <?php
     $title = 'Invoice - FSMS';
-    $content_title = "Invoice";
+    $content_title = "Edit Invoice";
     function breadcrumb(){
         echo '<li class="breadcrumb-item">Invoice</li>';
         echo '<li class="breadcrumb-item active">Edit</li>';

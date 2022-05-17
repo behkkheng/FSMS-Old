@@ -65,11 +65,12 @@ $invoice = mysqli_fetch_assoc($run_query);
 
                 <div class="col-sm-4 invoice-col">
                     <!--invoice id-->
-                    <b class="col-sm-2">Invoice #<?php echo $invoice['invoiceID']; ?></b><br>
+                    <b class="col-sm-6">Invoice #<?php echo $invoice['invoiceID']; ?></b><br>
                     <br>
 
+
                     <!--date-->
-                    <div class="row col-sm-8">
+                    <div class="row col-sm-12">
                         <div class="col-sm-6">
                             <b>Date: </b>
                         </div>
@@ -84,11 +85,11 @@ $invoice = mysqli_fetch_assoc($run_query);
                     <br>
 
                     <!--Cancel status-->
-                    <div class="row col-sm-8">
-                        <div class="col-sm-6">
+                    <div class="row col-md-12">
+                        <div class="col-md-6">
                             <b>Invoice Status: </b>
                         </div>
-                        <div class="col-sm-6">
+                        <div class="col-md-6">
                             <?php
                             if ($invoice['cancel_status'] == "Cancel") {
                                 echo '<p style="color:red;">Cancel</p>';
@@ -109,11 +110,12 @@ $invoice = mysqli_fetch_assoc($run_query);
                     <table class="table table-striped">
                         <thead>
                             <tr>
-                                <th class="text-left">No.</th>
-                                <th class="text-left">Product</th>
+                                <th>No.</th>
+                                <th>Product ID</th>
+                                <th>Product</th>
                                 <th>Qty.</th>
                                 <th>Unit Price</th>
-                                <th>Subtotal</th>
+                                <th class="text-right">Subtotal&nbsp&nbsp&nbsp&nbsp</th>
                             </tr>
                         </thead>
                         <tr>
@@ -129,7 +131,10 @@ $invoice = mysqli_fetch_assoc($run_query);
                                     <tbody>
                                         <tr>
                                             <!--index number-->
-                                            <td class="text-left"> <?php echo $index_number; ?> </td>
+                                            <td> <?php echo $index_number; ?> </td>
+
+                                            <!--product id-->
+                                            <td> <?php echo $row['productID']; ?> </td>
 
                                             <!--name of product-->
                                             <?php
@@ -139,7 +144,7 @@ $invoice = mysqli_fetch_assoc($run_query);
                                             $run_query = mysqli_query($connection, $get_product_name);
                                             $product_name = mysqli_fetch_array($run_query);
                                             ?>
-                                            <td class="text-left"> <?php echo $product_name["name"]; ?> </td>
+                                            <td> <?php echo $product_name["name"]; ?> </td>
 
                                             <!--quantity-->
                                             <td> <?php echo $row['quantity']; ?> </td>
@@ -153,9 +158,9 @@ $invoice = mysqli_fetch_assoc($run_query);
                                             <td>RM <?php echo $product_price['price']; ?> </td>
 
                                             <!--Subtotal-->
-                                            <td>
+                                            <td class="text-right">
                                                 <b>
-                                                    RM <?php echo $row['subtotal']; ?>
+                                                    RM <?php echo $row['subtotal']; ?>&nbsp&nbsp
                                                 </b>
                                             </td>
 
@@ -207,9 +212,9 @@ $invoice = mysqli_fetch_assoc($run_query);
                                 $invoice_total = mysqli_fetch_array($run_query);
                                 $total_amount = $invoice_total['total_amount'];
                                 ?>
-                                <td class="pl-0 ml-0">
+                                <td class="pl-0 ml-0 text-right">
                                     <b>
-                                        RM <?php echo "$total_amount"; ?>
+                                        RM <?php echo "$total_amount"; ?>&nbsp&nbsp
                                     </b>
                                 </td>
                             </tr>
@@ -221,19 +226,60 @@ $invoice = mysqli_fetch_assoc($run_query);
                 </div>
                 <!-- /.col -->
             </div>
+            <br>
             <!-- /.row -->
             <!-- this row will not appear when printing -->
-            <div class="row no-print" style="text-align:right; width:100%; padding:0;">
+            <div class="row no-print text-rightd-flex justify-content-between">
 
-                <form action="\FSMS\User\other_user_func.php" method="GET">
-                    <input type="hidden" value="<?php echo $invoice['invoiceID']; ?>" name="invoiceID">
-                    <button type="submit" class="btn btn-info btn-sm m-1 editbtn" name="edit"><i class="fas fa-pencil-alt"></i> Edit </button>
-                </form>
+                <div>
 
-                <form class="">
-                    <input type="hidden" value="<?php echo $invoice['invoiceID']; ?>" name="id">
-                    <button type="button" class="btn btn-danger deletebtn btn-sm m-1"><i class="fas fa-trash"></i> Delete </button>
-                </form>
+                </div>
+                <div class="row mr-2">
+
+                    <?php
+                    $invoiceID = $invoice['invoiceID'];
+
+                    if ($invoice['cancel_status'] == "Not Cancel") {
+                    ?>
+                        <form action="\FSMS\Invoice\Invoice-Edit.php" method="GET">
+                            <input type="hidden" value="<?php echo $invoiceID; ?>" name="id">
+
+                            <button type="submit" class="btn btn-info btn m-1 editbtn" name="edit"><i class="fas fa-pencil-alt"></i> Edit </button>
+                        </form>'
+                    <?php
+                    } else {
+                    ?>
+                        <form action="\FSMS\Invoice\Invoice-Edit.php" method="GET">
+                            <input type="hidden" value="<?php echo $invoiceID; ?>" name="id">
+
+                            <button type="submit" class="btn btn-info btn m-1 editbtn" name="edit" disabled><i class="fas fa-pencil-alt"></i> Edit </button>
+                        </form>'<?php
+                            }
+
+                                ?>
+
+
+
+                        <?php
+                        $invoiceID = $invoice['invoiceID'];
+
+                        if ($invoice['cancel_status'] == "Not Cancel") {
+                            echo
+                            '<form>
+                    <input type="hidden" value="$invoiceID" name="id">
+                    <button type="button" class="btn btn-danger deletebtn btn m-1"><i class="fas-solid fa-file-xmark"></i> Delete </button>
+                </form>';
+                        } else {
+                            echo
+                            '<form>
+                    <input type="hidden" value="$invoiceID" name="id">
+                    <button type="button" class="btn btn-danger deletebtn btn m-1" disabled><i class="fas-solid fa-file-xmark"></i> Delete </button>
+                </form>';
+                        }
+
+                        ?>
+                </div>
+
 
             </div>
         </div>
@@ -256,13 +302,14 @@ $invoice = mysqli_fetch_assoc($run_query);
 
                 <div class="modal-body">
 
-                    <input type="hidden" name="delete_id" id="delete_id">
+                    <input type="hidden" name="cancel_id" id="delete_id">
 
                     <h5 class="text-center"> Are you sure want to cancel?</h5>
+                    <h5 class="text-center"> *You can't revert back or edit later.</h5>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal"> Cancel </button>
-                    <button type="submit" name="deletedata" class="btn btn-primary">Yes</button>
+                    <button type="submit" name="canceldata" class="btn btn-primary">Yes</button>
                 </div>
             </form>
 

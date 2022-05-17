@@ -10,6 +10,9 @@ session_start();
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title><?php echo $title; ?></title>
 
+    <!--Jquery-->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+
     <!-- Google Font: Source Sans Pro -->
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
     <!-- Font Awesome Icons -->
@@ -21,16 +24,24 @@ session_start();
     <!-- Theme style -->
     <link rel="stylesheet" href="../css/adminlte.min.css">
 
+    <!--Bootstrap CDN-->
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.2/font/bootstrap-icons.css">
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/css/bootstrap.min.css" integrity="sha384-zCbKRCUGaJDkqS1kPbPd7TveP5iyJE0EjAuZQTgFLD2ylzuqKfdKlfG/eSrtxUkn" crossorigin="anonymous">
+
+
 </head>
 
 <body class="hold-transition sidebar-mini">
 
     <!--script-->
+
     <script src="../lib/jquery/dist/jquery.min.js" async></script>
-    <script src="../lib/bootstrap/dist/js/bootstrap.bundle.min.js" async></script>
     <script src="../lib/jquery-ui-1.13.0.custom/jquery-ui.min.js" async></script>
     <script src="../js/adminlte.min.js" async></script>
     <script src="../lib/sweetalert2/sweetalert2.min.js" async></script>
+    <script src="../lib/bootstrap/dist/js/bootstrap.bundle.min.js" async></script>
 
     <header>
         <!-- Navbar -->
@@ -76,6 +87,7 @@ session_start();
                             </a>
                             <table>
                                 <?php
+                                echo "Session";
                                 foreach ($_SESSION as $key => $value) {
                                     echo "<tr style='color:white;'>";
                                     echo "<td style='color:white;'>";
@@ -87,7 +99,7 @@ session_start();
                                     echo "</tr>";
                                 }
                                 ?>
-                                </table>
+                            </table>
                         </li>
                         <li class="nav-item">
                             <a href="#" class="nav-link">
@@ -134,6 +146,7 @@ session_start();
 
 
                                 foreach ($_POST as $key => $value) {
+                                    echo "Post";
                                     echo "<tr style='color:white;'>";
                                     echo "<td style='color:white;'>";
                                     echo $key;
@@ -190,7 +203,7 @@ session_start();
                             <table>
                                 <?php
 
-
+                                echo "Get";
                                 foreach ($_GET as $key => $value) {
                                     echo "<tr style='color:white;'>";
                                     echo "<td style='color:white;'>";
@@ -222,7 +235,8 @@ session_start();
                 <div class="row mb-2">
                     <div class="col-sm-6">
                         <div class="row">
-                            <h1 class="m-0 ml-2 col" style="font-weight: bold;"><?php echo $content_title; ?></h1>
+                        <button type="button" class="btn btn-danger btn-lg ml-3" onclick="history.back();"><i class="bi bi-arrow-left-circle-fill"></i></button>
+                            <h1 class="m-0 ml-2 col mt-2" style="font-weight: bold;"><?php echo $content_title; ?></h1>
                         </div>
                     </div><!-- /.col -->
                     <div class="col-sm-6">
