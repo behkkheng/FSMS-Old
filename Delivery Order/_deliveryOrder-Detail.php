@@ -7,10 +7,10 @@ $dbname = "fsms";
 // Create connection
 $connection = new mysqli($servername, $username, $password, $dbname);
 
-$invoiceID = $_GET['id'];
-$get_invoice_query = "SELECT * FROM `invoice` WHERE invoiceID='$invoiceID'";
-$run_query = mysqli_query($connection, $get_invoice_query);
-$invoice = mysqli_fetch_assoc($run_query);
+$deliveryOrderID = $_GET['id'];
+$get_deliveryOrder_query = "SELECT * FROM `deliveryOrder` WHERE deliveryOrderID='$deliveryOrderID'";
+$run_query = mysqli_query($connection, $get_deliveryOrder_query);
+$deliveryOrder = mysqli_fetch_assoc($run_query);
 ?>
 
 <div class="row">
@@ -28,8 +28,8 @@ $invoice = mysqli_fetch_assoc($run_query);
                 <!-- /.col -->
             </div>
             <!-- info row -->
-            <div class="row invoice-info">
-                <div class="col-sm-4 invoice-col border-right">
+            <div class="row deliveryOrder-info">
+                <div class="col-sm-4 deliveryOrder-col border-right">
                     From:
                     <address>
                         <strong>Lean Aik Furniture</strong><br>
@@ -43,11 +43,11 @@ $invoice = mysqli_fetch_assoc($run_query);
                 <!-- /.col -->
 
                 <!--add client-->
-                <div class="col-sm-4 invoice-col border-right">
+                <div class="col-sm-4 deliveryOrder-col border-right">
                     To:
                     <br>
                     <?php
-                    $customerID = $invoice['customerID'];
+                    $customerID = $deliveryOrder['customerID'];
                     $get_customer_detail_query = "SELECT * FROM `customer` WHERE customerID = '$customerID'";
                     $run_query = mysqli_query($connection, $get_customer_detail_query);
 
@@ -63,9 +63,9 @@ $invoice = mysqli_fetch_assoc($run_query);
 
                 </div>
 
-                <div class="col-sm-4 invoice-col">
-                    <!--invoice id-->
-                    <b class="col-sm-6">Invoice #<?php echo $invoice['invoiceID']; ?></b><br>
+                <div class="col-sm-4 deliveryOrder-col">
+                    <!--deliveryOrder id-->
+                    <b class="col-sm-6">Delivery Order #<?php echo $deliveryOrder['deliveryOrderID']; ?></b><br>
                     <br>
 
 
@@ -76,7 +76,7 @@ $invoice = mysqli_fetch_assoc($run_query);
                         </div>
                         <div class="col-sm-6">
                             <?php
-                            $date = $invoice['date'];
+                            $date = $deliveryOrder['date'];
                             echo $date;
                             ?>
                         </div>
@@ -87,11 +87,11 @@ $invoice = mysqli_fetch_assoc($run_query);
                     <!--Cancel status-->
                     <div class="row col-md-12">
                         <div class="col-md-6">
-                            <b>Invoice Status: </b>
+                            <b>DeliveryOrder Status: </b>
                         </div>
                         <div class="col-md-6">
                             <?php
-                            if ($invoice['cancel_status'] == "Cancel") {
+                            if ($deliveryOrder['cancel_status'] == "Cancel") {
                                 echo '<p style="color:red;">Cancel</p>';
                             } else {
                                 echo '<p>Not Cancel</p>';
@@ -114,14 +114,12 @@ $invoice = mysqli_fetch_assoc($run_query);
                                 <th>Product ID</th>
                                 <th>Product</th>
                                 <th>Qty.</th>
-                                <th>Unit Price</th>
-                                <th class="text-right">Subtotal&nbsp&nbsp&nbsp&nbsp</th>
                             </tr>
                         </thead>
                         <tr>
                             <?php
-                            $all_invoice_detail_query = "SELECT * FROM invoiceDetail WHERE invoiceID = '$invoiceID'";
-                            $run_query = mysqli_query($connection, $all_invoice_detail_query);
+                            $all_deliveryOrder_detail_query = "SELECT * FROM deliveryOrderDetail WHERE deliveryOrderID = '$deliveryOrderID'";
+                            $run_query = mysqli_query($connection, $all_deliveryOrder_detail_query);
                             if ($run_query) {
                                 $index_number = 1;
                                 foreach ($run_query as $row) {
@@ -148,21 +146,6 @@ $invoice = mysqli_fetch_assoc($run_query);
 
                                             <!--quantity-->
                                             <td> <?php echo $row['quantity']; ?> </td>
-
-                                            <!--product unit price-->
-                                            <?php
-                                            $get_product_price = "SELECT price FROM product WHERE productID = '$productID'";
-                                            $run_query = mysqli_query($connection, $get_product_price);
-                                            $product_price = mysqli_fetch_array($run_query);
-                                            ?>
-                                            <td>RM <?php echo $product_price['price']; ?> </td>
-
-                                            <!--Subtotal-->
-                                            <td class="text-right">
-                                                <b>
-                                                    RM <?php echo $row['subtotal']; ?>&nbsp&nbsp
-                                                </b>
-                                            </td>
 
                                         </tr>
                                     </tbody>
@@ -200,23 +183,25 @@ $invoice = mysqli_fetch_assoc($run_query);
                     <div class="table-responsive">
                         <table class="table">
                             <tr>
-                                <th class="" style="border: 0;">Amount</th>
+                                <th class="lead" style="border: 0;">Amount of Product</th>
                             </tr>
                             <tr>
 
-                                <!--total amount-->
-                                <th class="">Total:</th>
+                                <!--total product-->
+                                <th>Total Number of Product:</th>
                                 <?php
-                                $get_invoice_total = "SELECT total_amount FROM invoice WHERE invoiceID = '$invoiceID'";
-                                $run_query = mysqli_query($connection, $get_invoice_total);
-                                $invoice_total = mysqli_fetch_array($run_query);
-                                $total_amount = $invoice_total['total_amount'];
+                                $product_quantity = 0;
+                                $deliveryOrderDetail = "SELECT quantity FROM deliveryOrderDetail WHERE deliveryOrderID='$deliveryOrderID'";
+                                $queryResult = mysqli_query($connection, $deliveryOrderDetail);
+                                if ($queryResult) {
+                                    foreach ($queryResult as $row) {
+
+                                        $product_quantity = $product_quantity + $row['quantity'];
+                                    }
+                                }
                                 ?>
-                                <td class="pl-0 ml-0 text-right">
-                                    <b>
-                                        RM <?php echo "$total_amount"; ?>&nbsp&nbsp
-                                    </b>
-                                </td>
+                                <td><b><?php echo "$product_quantity"; ?></b></td>
+
                             </tr>
                             <tr>
 
@@ -240,20 +225,20 @@ $invoice = mysqli_fetch_assoc($run_query);
                     <button type="button" class="btn btn-secondary m-1" onClick="window.print()"><i class="bi bi-printer-fill"></i> Print</button>
 
                     <?php
-                    $invoiceID = $invoice['invoiceID'];
+                    $deliveryOrderID = $deliveryOrder['deliveryOrderID'];
 
-                    if ($invoice['cancel_status'] == "Not Cancel") {
+                    if ($deliveryOrder['cancel_status'] == "Not Cancel") {
                     ?>
-                        <form action="\FSMS\Invoice\Invoice-Edit.php" method="GET">
-                            <input type="hidden" value="<?php echo $invoiceID; ?>" name="id">
+                        <form action="\FSMS\Delivery Order\DeliveryOrder-Edit.php" method="GET">
+                            <input type="hidden" value="<?php echo $deliveryOrderID; ?>" name="id">
 
                             <button type="submit" class="btn btn-info btn m-1 editbtn" name="edit"><i class="fas fa-pencil-alt"></i> Edit </button>
                         </form>
                     <?php
                     } else {
                     ?>
-                        <form action="\FSMS\Invoice\Invoice-Edit.php" method="GET">
-                            <input type="hidden" value="<?php echo $invoiceID; ?>" name="id">
+                        <form action="\FSMS\Delivery Order\DeliveryOrder-Edit.php" method="GET">
+                            <input type="hidden" value="<?php echo $deliveryOrderID; ?>" name="id">
 
                             <button type="submit" class="btn btn-info btn m-1 editbtn" name="edit" disabled><i class="fas fa-pencil-alt"></i> Edit </button>
                         </form>'<?php
@@ -264,25 +249,25 @@ $invoice = mysqli_fetch_assoc($run_query);
 
 
                         <?php
-                        $invoiceID = $invoice['invoiceID'];
+                        $deliveryOrderID = $deliveryOrder['deliveryOrderID'];
 
-                        if ($invoice['cancel_status'] == "Not Cancel") {
-                            ?>
-                                <form>
-                                    <input type="hidden" value="<?php $invoiceID; ?>" name="id">
-                                    <button type="button" class="btn btn-danger deletebtn btn mt-1" data-toggle="modal" data-target="#deletemodal"><i class="bi bi-file-earmark-excel-fill"></i> Cancel </button>
-                                </form>
-                            <?php
-                            } else {
-                            ?>
-                                <form>
-                                    <input type="hidden" value="<?php $invoiceID ?>" name="id">
-                                    <button type="button" class="btn btn-danger deletebtn btn mt-1" disabled><i class="bi bi-file-earmark-excel-fill"></i> Cancel </button>
-                                </form>
-                            <?php
-                            }
-    
-                            ?>
+                        if ($deliveryOrder['cancel_status'] == "Not Cancel") {
+                        ?>
+                            <form>
+                                <input type="hidden" value="<?php $deliveryOrderID; ?>" name="id">
+                                <button type="button" class="btn btn-danger deletebtn btn mt-1" data-toggle="modal" data-target="#deletemodal"><i class="bi bi-file-earmark-excel-fill"></i> Cancel </button>
+                            </form>
+                        <?php
+                        } else {
+                        ?>
+                            <form>
+                                <input type="hidden" value="<?php $deliveryOrderID ?>" name="id">
+                                <button type="button" class="btn btn-danger deletebtn btn mt-1" disabled><i class="bi bi-file-earmark-excel-fill"></i> Cancel </button>
+                            </form>
+                        <?php
+                        }
+
+                        ?>
                 </div>
 
 
@@ -290,24 +275,24 @@ $invoice = mysqli_fetch_assoc($run_query);
         </div>
     </div>
 </div>
-<!-- /.invoice -->
+<!-- /.deliveryOrder -->
 
 <!-- Cancel Modal -->
 <div class="modal fade" id="deletemodal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 style="font-weight: bold;" class="modal-title" id="exampleModalLabel"> Cancel Invoice </h5>
+                <h5 style="font-weight: bold;" class="modal-title" id="exampleModalLabel"> Cancel Delivery Order </h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
 
-            <form action="other_invoice_func.php" method="post">
+            <form action="other_deliveryOrder_func.php" method="post">
 
                 <div class="modal-body">
 
-                    <input type="hidden" name="cancel_id" id="delete_id" value="<?php echo $invoiceID ?>">
+                    <input type="hidden" name="cancel_id" id="delete_id" value="<?php echo $deliveryOrderID ?>">
 
                     <h5 class="text-center"> Are you sure want to cancel?</h5>
                     <h5 class="text-center"> *You can't revert back or edit later.</h5>
@@ -321,3 +306,5 @@ $invoice = mysqli_fetch_assoc($run_query);
         </div>
     </div>
 </div>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>

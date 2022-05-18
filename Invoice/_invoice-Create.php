@@ -198,7 +198,7 @@ if (isset($invoice)) {
                                                 <td><b>RM <?php echo $row['subtotal']; ?></b></td>
 
                                                 <!--delete button-->
-                                                <td>
+                                                <td class="text-right">
                                                     <form action="" method="post">
                                                         <input type="hidden" value="<?php echo $row['invoiceDetailID']; ?>" name="id">
                                                         <button type="submit" class="btn btn-danger btn-sm m-1 editbtn" name="deleteInvoiceDetail"><i class="fas fa-trash"></i> Delete </button>
@@ -281,15 +281,15 @@ if (isset($invoice)) {
                         $already_have_invoice_detail_query = mysqli_fetch_array($run_query);
 
                         if ($_SESSION['invoice_customerID'] == "") {
-                            echo '<button type="button" class="btn btn-success float-right" data-toggle="modal" data-target="#customer_not_set"><i class="fas fa-save"></i>
+                            echo '<button type="button" class="btn btn-success float-right mr-2" data-toggle="modal" data-target="#customer_not_set"><i class="fas fa-save"></i>
                                 Create Invoice
                               </button>';
                         } else if (!isset($already_have_invoice_detail_query)) {
-                            echo '<button type="button" class="btn btn-success float-right" data-toggle="modal" data-target="#invoice_detail_not_set"><i class="fas fa-save"></i>
+                            echo '<button type="button" class="btn btn-success float-right mr-2" data-toggle="modal" data-target="#invoice_detail_not_set"><i class="fas fa-save"></i>
                                 Create Invoice
                               </button>';
                         } else if (isset($already_have_invoice_detail_query) && isset($_SESSION['invoice_customerID'])) {
-                            echo '<button type="submit" name="createInvoice" class="btn btn-success float-right">
+                            echo '<button type="submit" name="createInvoice" class="btn btn-success float-right mr-2">
                             <i class="fas fa-save"></i> Create Invoice
                             </button>';
                         }
@@ -419,7 +419,7 @@ if (isset($invoice)) {
                     <!--Customer-->
                     <div class="form-group row">
                         <label for="customer" class="col-sm-3 col-form-label">Customer: </label>
-                        <select class="form-control col-sm-9" id="customer" name="customer">
+                        <select class="form-control col-sm-8" id="customer" name="customer">
                             <?php
                             $show_customer_name_query = "SELECT name, customerID FROM customer";
                             $query_run = mysqli_query($connection, $show_customer_name_query);

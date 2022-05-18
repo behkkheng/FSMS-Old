@@ -4,7 +4,7 @@
             <div class="card-header">
                 <div class="row">
                     <div class="col-md-6 offset-md-6">
-                        <a class="btn btn-primary float-right" href="Invoice-Create.php" role="button"><i class="bi bi-plus-circle-fill"></i> Create New Invoice</a>
+                        <a class="btn btn-primary float-right" href="Quotation-Create.php" role="button"><i class="bi bi-plus-circle-fill"></i> Create New Quotation</a>
                     </div>
                 </div>
             </div>
@@ -15,19 +15,19 @@
             $username = "root";
             $password = "";
             $dbname = "fsms";
-            $_SESSION["invoice_customerID"] = "";
+            $_SESSION["quotation_customerID"] = "";
             $_SESSION['run_one_time'] = 1;
 
             // Create connection
             $connection = new mysqli($servername, $username, $password, $dbname);
 
-            $query = "SELECT * FROM invoice";
+            $query = "SELECT * FROM quotation";
             $query_run = mysqli_query($connection, $query);
             ?>
             <table id="datatableid" class="table text-center">
                 <thead>
                     <tr>
-                        <th scope="col"> Invoice ID</th>
+                        <th scope="col"> Quotation ID</th>
                         <th scope="col">Customer</th>
                         <th scope="col">Date</th>
                         <th scope="col">Status</th>
@@ -42,7 +42,7 @@
 
                         <tbody>
                             <tr>
-                                <td> <?php echo $row['invoiceID']; ?> </td>
+                                <td> <?php echo $row['quotationID']; ?> </td>
                                 <td> <?php
                                         $customerID = $row['customerID'];
                                         $get_customer_name_query = "SELECT name FROM customer WHERE customerID='$customerID'";
@@ -63,26 +63,26 @@
                                 </td>
 
 
-                                <td class="">
+                                <td class="mr-1">
                                     <div class="row float-right mr-3">
-                                        <form action="\FSMS\Invoice\Invoice-Detail.php" method="get">
-                                            <input type="hidden" value="<?php echo $row['invoiceID']; ?>" name="id">
+                                        <form action="\FSMS\Quotation\Quotation-Detail.php" method="get">
+                                            <input type="hidden" value="<?php echo $row['quotationID']; ?>" name="id">
                                             <button type="submit" class="btn btn-primary btn-sm m-1 viewbtn"><i class="fas fa-folder"></i> View </button>
                                         </form>
 
                                         <?php
-                                        $invoiceID = $row['invoiceID'];
+                                        $quotationID = $row['quotationID'];
 
                                         if ($row['cancel_status'] == "Not Cancel") {
                                         ?>
-                                            <form action="\FSMS\Invoice\Invoice-Edit.php" method="get">
-                                            <input type="hidden" value="<?php echo $invoiceID; ?>" name="id">
+                                            <form action="\FSMS\Quotation\Quotation-Edit.php" method="get">
+                                            <input type="hidden" value="<?php echo $quotationID; ?>" name="id">
                                             <button type="submit" class="btn btn-info btn-sm m-1 editbtn"><i class="fas fa-pencil-alt"></i> Edit </button>
                                         </form><?php
                                         } else {
                                             ?>
-                                            <form action="\FSMS\Invoice\Invoice-Edit.php" method="get">
-                                            <input type="hidden" value="<?php echo $invoiceID; ?>" name="id">
+                                            <form action="\FSMS\Quotation\Quotation-Edit.php" method="get">
+                                            <input type="hidden" value="<?php echo $quotationID; ?>" name="id">
                                             <button type="submit" class="btn btn-info btn-sm m-1 editbtn" disabled><i class="fas fa-pencil-alt"></i> Edit </button>
                                         </form><?php
                                         }
@@ -92,18 +92,18 @@
 
 
                                         <?php
-                                        $invoiceID = $row['invoiceID'];
+                                        $quotationID = $row['quotationID'];
 
                                         if ($row['cancel_status'] == "Not Cancel") {
                                             echo
                                             '<form>
-                                                <input type="hidden" value="$invoiceID" name="id">
+                                                <input type="hidden" value="$quotationID" name="id">
                                                 <button type="button" class="btn btn-danger deletebtn btn-sm m-1"><i class="bi bi-file-earmark-excel-fill"></i> Cancel </button>
                                                 </form>';
                                         } else {
                                             echo
                                             '<form>
-                                                <input type="hidden" value="$invoiceID" name="id">
+                                                <input type="hidden" value="$quotationID" name="id">
                                                 <button type="button" class="btn btn-danger deletebtn btn-sm m-1" disabled><i class="bi bi-file-earmark-excel-fill"></i> Cancel </button>
                                                 </form>';
                                         }
@@ -129,19 +129,19 @@
                     <div class="modal-dialog modal-dialog-centered" role="document">
                         <div class="modal-content">
                             <div class="modal-header">
-                                <h5 style="font-weight: bold;" class="modal-title" id="exampleModalLabel"> Delete Invoice Data </h5>
+                                <h5 style="font-weight: bold;" class="modal-title" id="exampleModalLabel"> Delete Quotation Data </h5>
                                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                     <span aria-hidden="true">&times;</span>
                                 </button>
                             </div>
 
-                            <form action="other_invoice_func.php" method="POST">
+                            <form action="other_quotation_func.php" method="POST">
 
                                 <div class="modal-body">
 
                                     <input type="hidden" name="cancel_id" id="delete_id">
 
-                                    <h5 class="text-center"> Are you sure want to cancel this invoice?</h5>
+                                    <h5 class="text-center"> Are you sure want to cancel this quotation?</h5>
                                     <h5 class="text-center"> *You can't revert back or edit later.</h5>
                                 </div>
                                 <div class="modal-footer">

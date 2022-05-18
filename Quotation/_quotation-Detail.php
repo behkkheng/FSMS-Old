@@ -7,10 +7,10 @@ $dbname = "fsms";
 // Create connection
 $connection = new mysqli($servername, $username, $password, $dbname);
 
-$invoiceID = $_GET['id'];
-$get_invoice_query = "SELECT * FROM `invoice` WHERE invoiceID='$invoiceID'";
-$run_query = mysqli_query($connection, $get_invoice_query);
-$invoice = mysqli_fetch_assoc($run_query);
+$quotationID = $_GET['id'];
+$get_quotation_query = "SELECT * FROM `quotation` WHERE quotationID='$quotationID'";
+$run_query = mysqli_query($connection, $get_quotation_query);
+$quotation = mysqli_fetch_assoc($run_query);
 ?>
 
 <div class="row">
@@ -43,11 +43,11 @@ $invoice = mysqli_fetch_assoc($run_query);
                 <!-- /.col -->
 
                 <!--add client-->
-                <div class="col-sm-4 invoice-col border-right">
+                <div class="col-sm-4 quotation-col border-right">
                     To:
                     <br>
                     <?php
-                    $customerID = $invoice['customerID'];
+                    $customerID = $quotation['customerID'];
                     $get_customer_detail_query = "SELECT * FROM `customer` WHERE customerID = '$customerID'";
                     $run_query = mysqli_query($connection, $get_customer_detail_query);
 
@@ -63,9 +63,9 @@ $invoice = mysqli_fetch_assoc($run_query);
 
                 </div>
 
-                <div class="col-sm-4 invoice-col">
-                    <!--invoice id-->
-                    <b class="col-sm-6">Invoice #<?php echo $invoice['invoiceID']; ?></b><br>
+                <div class="col-sm-4 quotation-col">
+                    <!--quotation id-->
+                    <b class="col-sm-6">Quotation #<?php echo $quotation['quotationID']; ?></b><br>
                     <br>
 
 
@@ -76,7 +76,7 @@ $invoice = mysqli_fetch_assoc($run_query);
                         </div>
                         <div class="col-sm-6">
                             <?php
-                            $date = $invoice['date'];
+                            $date = $quotation['date'];
                             echo $date;
                             ?>
                         </div>
@@ -87,11 +87,11 @@ $invoice = mysqli_fetch_assoc($run_query);
                     <!--Cancel status-->
                     <div class="row col-md-12">
                         <div class="col-md-6">
-                            <b>Invoice Status: </b>
+                            <b>Quotation Status: </b>
                         </div>
                         <div class="col-md-6">
                             <?php
-                            if ($invoice['cancel_status'] == "Cancel") {
+                            if ($quotation['cancel_status'] == "Cancel") {
                                 echo '<p style="color:red;">Cancel</p>';
                             } else {
                                 echo '<p>Not Cancel</p>';
@@ -120,8 +120,8 @@ $invoice = mysqli_fetch_assoc($run_query);
                         </thead>
                         <tr>
                             <?php
-                            $all_invoice_detail_query = "SELECT * FROM invoiceDetail WHERE invoiceID = '$invoiceID'";
-                            $run_query = mysqli_query($connection, $all_invoice_detail_query);
+                            $all_quotation_detail_query = "SELECT * FROM quotationDetail WHERE quotationID = '$quotationID'";
+                            $run_query = mysqli_query($connection, $all_quotation_detail_query);
                             if ($run_query) {
                                 $index_number = 1;
                                 foreach ($run_query as $row) {
@@ -207,10 +207,10 @@ $invoice = mysqli_fetch_assoc($run_query);
                                 <!--total amount-->
                                 <th class="">Total:</th>
                                 <?php
-                                $get_invoice_total = "SELECT total_amount FROM invoice WHERE invoiceID = '$invoiceID'";
-                                $run_query = mysqli_query($connection, $get_invoice_total);
-                                $invoice_total = mysqli_fetch_array($run_query);
-                                $total_amount = $invoice_total['total_amount'];
+                                $get_quotation_total = "SELECT total_amount FROM quotation WHERE quotationID = '$quotationID'";
+                                $run_query = mysqli_query($connection, $get_quotation_total);
+                                $quotation_total = mysqli_fetch_array($run_query);
+                                $total_amount = $quotation_total['total_amount'];
                                 ?>
                                 <td class="pl-0 ml-0 text-right">
                                     <b>
@@ -240,20 +240,20 @@ $invoice = mysqli_fetch_assoc($run_query);
                     <button type="button" class="btn btn-secondary m-1" onClick="window.print()"><i class="bi bi-printer-fill"></i> Print</button>
 
                     <?php
-                    $invoiceID = $invoice['invoiceID'];
+                    $quotationID = $quotation['quotationID'];
 
-                    if ($invoice['cancel_status'] == "Not Cancel") {
+                    if ($quotation['cancel_status'] == "Not Cancel") {
                     ?>
-                        <form action="\FSMS\Invoice\Invoice-Edit.php" method="GET">
-                            <input type="hidden" value="<?php echo $invoiceID; ?>" name="id">
+                        <form action="\FSMS\Quotation\Quotation-Edit.php" method="GET">
+                            <input type="hidden" value="<?php echo $quotationID; ?>" name="id">
 
                             <button type="submit" class="btn btn-info btn m-1 editbtn" name="edit"><i class="fas fa-pencil-alt"></i> Edit </button>
                         </form>
                     <?php
                     } else {
                     ?>
-                        <form action="\FSMS\Invoice\Invoice-Edit.php" method="GET">
-                            <input type="hidden" value="<?php echo $invoiceID; ?>" name="id">
+                        <form action="\FSMS\Quotation\Quotation-Edit.php" method="GET">
+                            <input type="hidden" value="<?php echo $quotationID; ?>" name="id">
 
                             <button type="submit" class="btn btn-info btn m-1 editbtn" name="edit" disabled><i class="fas fa-pencil-alt"></i> Edit </button>
                         </form>'<?php
@@ -264,25 +264,27 @@ $invoice = mysqli_fetch_assoc($run_query);
 
 
                         <?php
-                        $invoiceID = $invoice['invoiceID'];
+                        $quotationID = $quotation['quotationID'];
 
-                        if ($invoice['cancel_status'] == "Not Cancel") {
+                        if ($quotation['cancel_status'] == "Not Cancel") {
                             ?>
                                 <form>
-                                    <input type="hidden" value="<?php $invoiceID; ?>" name="id">
+                                    <input type="hidden" value="<?php $quotationID; ?>" name="id">
                                     <button type="button" class="btn btn-danger deletebtn btn mt-1" data-toggle="modal" data-target="#deletemodal"><i class="bi bi-file-earmark-excel-fill"></i> Cancel </button>
                                 </form>
                             <?php
                             } else {
                             ?>
                                 <form>
-                                    <input type="hidden" value="<?php $invoiceID ?>" name="id">
+                                    <input type="hidden" value="<?php $quotationID ?>" name="id">
                                     <button type="button" class="btn btn-danger deletebtn btn mt-1" disabled><i class="bi bi-file-earmark-excel-fill"></i> Cancel </button>
                                 </form>
                             <?php
                             }
     
                             ?>
+
+                        ?>
                 </div>
 
 
@@ -290,24 +292,24 @@ $invoice = mysqli_fetch_assoc($run_query);
         </div>
     </div>
 </div>
-<!-- /.invoice -->
+<!-- /.quotation -->
 
 <!-- Cancel Modal -->
 <div class="modal fade" id="deletemodal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 style="font-weight: bold;" class="modal-title" id="exampleModalLabel"> Cancel Invoice </h5>
+                <h5 style="font-weight: bold;" class="modal-title" id="exampleModalLabel"> Cancel Quotation </h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
 
-            <form action="other_invoice_func.php" method="post">
+            <form action="other_deliveryOrder_func.php" method="post">
 
                 <div class="modal-body">
 
-                    <input type="hidden" name="cancel_id" id="delete_id" value="<?php echo $invoiceID ?>">
+                    <input type="hidden" name="cancel_id" id="delete_id" value="<?php echo $quotationID ?>">
 
                     <h5 class="text-center"> Are you sure want to cancel?</h5>
                     <h5 class="text-center"> *You can't revert back or edit later.</h5>

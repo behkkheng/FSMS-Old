@@ -58,7 +58,7 @@ session_start();
         <!-- Main Sidebar Container -->
         <aside class="main-sidebar sidebar-dark-primary elevation-4">
             <!-- Brand Logo -->
-            <a href="home.php" class="brand-link">
+            <a href="/FSMS/Dashboard/Dashboard.php" class="brand-link">
                 <img src="../images/logo.png" alt="Prototype Logo" class="brand-image img-circle elevation-3" style="opacity: .8">
                 <span class="brand-text font-weight-light">FSMS</span>
             </a>
@@ -85,21 +85,7 @@ session_start();
                                     Dashboard
                                 </p>
                             </a>
-                            <table>
-                                <?php
-                                echo "Session";
-                                foreach ($_SESSION as $key => $value) {
-                                    echo "<tr style='color:white;'>";
-                                    echo "<td style='color:white;'>";
-                                    echo $key;
-                                    echo "</td>";
-                                    echo "<td style='color:white;'>";
-                                    echo $value;
-                                    echo "</td>";
-                                    echo "</tr>";
-                                }
-                                ?>
-                            </table>
+                            
                         </li>
                         <li class="nav-item">
                             <a href="#" class="nav-link">
@@ -111,7 +97,7 @@ session_start();
                             </a>
                             <ul class="nav nav-treeview">
                                 <li class="nav-item">
-                                    <a href="" class="nav-link">
+                                    <a href="/FSMS/Quotation/Quotation-Index.php" class="nav-link">
                                         <i class="ml-4 fas fa-file-contract nav-icon"></i>
                                         <p>Quotation</p>
                                     </a>
@@ -123,48 +109,41 @@ session_start();
                                     </a>
                                 </li>
                                 <li class="nav-item">
-                                    <a href="" class="nav-link">
+                                    <a href="/FSMS/Delivery Order/DeliveryOrder-Index.php" class="nav-link">
                                         <i class="ml-4 fas fa-shuttle-van nav-icon"></i>
                                         <p>Delivery Order</p>
                                     </a>
                                 </li>
-                                <li class="nav-item pointer">
+                                <?php
+                                if ($_SESSION['role'] == "Staff") {
+                                    echo '<li class="nav-item pointer">
                                     <a data-target="#sales-modal" data-toggle="modal" class="nav-link">
                                         <i class="ml-4 nav-icon fas fa-file-alt"></i>
                                         <p>Sales Reports</p>
                                     </a>
-                                </li>
-                            </ul>
-                        </li>
-                        <li class="nav-item">
-                            <a href="/FSMS/Product/Product-Index.php" class="nav-link">
-                                <i class="nav-icon fas fa-cubes"></i>
-                                <p>Products</p>
-                            </a>
-                            <table>
-                                <?php
-
-
-                                foreach ($_POST as $key => $value) {
-                                    echo "Post";
-                                    echo "<tr style='color:white;'>";
-                                    echo "<td style='color:white;'>";
-                                    echo $key;
-                                    echo "</td>";
-                                    echo "<td style='color:white;'>";
-                                    echo $value;
-                                    echo "</td>";
-                                    echo "</tr>";
+                                </li>';
+                                } else {
+                                    echo '<li class="nav-item pointer">
+                                    <a href="/FSMS/Monthly Report/MonthlyReport-Index.php" class="nav-link">
+                                        <i class="ml-4 nav-icon fas fa-file-alt"></i>
+                                        <p>Sales Reports</p>
+                                    </a>
+                                </li>';
                                 }
-
-
                                 ?>
-                            </table>
-                        </li>
+                                </ul>
 
-                        <?php
-                        if ($_SESSION['role'] == "Manager") {
-                            echo '<li class="nav-item pointer">
+                                <li class="nav-item">
+                                    <a href="/FSMS/Product/Product-Index.php" class="nav-link">
+                                        <i class="nav-icon fas fa-cubes"></i>
+                                        <p>Products</p>
+                                    </a>
+                                    
+                                </li>
+
+                                <?php
+                                if ($_SESSION['role'] == "Manager") {
+                                    echo '<li class="nav-item pointer">
                                 <a href="/FSMS/User/User-Index.php" class="nav-link">
                                     <p>
                                         <i class="nav-icon fas fa-user"></i>
@@ -172,8 +151,8 @@ session_start();
                                     </p>
                                 </a>
                             </li>';
-                        } else {
-                            echo '<li class="nav-item pointer">
+                                } else {
+                                    echo '<li class="nav-item pointer">
                                 <a data-target="#user-modal" data-toggle="modal" class="nav-link">
                                     <p>
                                         <i class="nav-icon fas fa-user"></i>
@@ -181,45 +160,27 @@ session_start();
                                     </p>
                                 </a>
                             </li>';
-                        }
-                        ?>
-
-                        <li class="nav-item pointer">
-                            <a href="/FSMS/Customer/Customer-Index.php" class="nav-link">
-                                <p>
-                                    <i class="nav-icon fas fa-user-edit"></i>
-                                    Customer
-                                </p>
-                            </a>
-                        </li>
-
-                        <li class="nav-item">
-                            <a href="/FSMS/logout_func.php" class="nav-link">
-                                <i class="nav-icon fas fa-sign-out-alt"></i>
-                                <p>
-                                    Log Out
-                                </p>
-                            </a>
-                            <table>
-                                <?php
-
-                                echo "Get";
-                                foreach ($_GET as $key => $value) {
-                                    echo "<tr style='color:white;'>";
-                                    echo "<td style='color:white;'>";
-                                    echo $key;
-                                    echo "</td>";
-                                    echo "<td style='color:white;'>";
-                                    echo $value;
-                                    echo "</td>";
-                                    echo "</tr>";
                                 }
-
-
                                 ?>
-                            </table>
-                        </li>
-                    </ul>
+
+                                <li class="nav-item pointer">
+                                    <a href="/FSMS/Customer/Customer-Index.php" class="nav-link">
+                                        <p>
+                                            <i class="nav-icon fas fa-user-edit"></i>
+                                            Customer
+                                        </p>
+                                    </a>
+                                </li>
+
+                                <li class="nav-item">
+                                    <a href="/FSMS/logout_func.php" class="nav-link">
+                                        <i class="nav-icon fas fa-sign-out-alt"></i>
+                                        <p>
+                                            Log Out
+                                        </p>
+                                    </a>
+                                </li>
+                            </ul>
                 </nav>
                 <!-- /.sidebar-menu -->
             </div>
@@ -235,7 +196,9 @@ session_start();
                 <div class="row mb-2">
                     <div class="col-sm-6">
                         <div class="row">
-                        <button type="button" class="btn btn-danger btn-lg ml-3" onclick="history.back();"><i class="bi bi-arrow-left-circle-fill"></i></button>
+                            <?php
+                            back_button();
+                            ?>
                             <h1 class="m-0 ml-2 col mt-2" style="font-weight: bold;"><?php echo $content_title; ?></h1>
                         </div>
                     </div><!-- /.col -->
@@ -269,41 +232,42 @@ session_start();
     </footer>
 
 
-    <div class="modal fade" id="sales-modal" tabindex="-1" role="dialog" aria-labelledby="DeleteModalTitle" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered modal-sm" role="document">
+ 
+    <div class="modal fade" id="sales-modal" tabindex="-1" aria-labelledby="quotation_detail_not_set" aria-hidden="true">
+        <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLongTitle">Warning!</h5>
+                    <b class="modal-title" id="exampleModalLabel">Warning!</b>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
-                <div class="modal-body">
-                    <span>Access Denied</span><br />
-                    <span>Only Manager allowed to access.</span>
+                <div class="modal-body text-center">
+                    <b>Access Denied.</b><br>
+                    Only Manager allowed to access.
                 </div>
                 <div class="modal-footer">
-                    <a class="btn btn-primary" href="@Url.Action(" Index", "SalesReport" )">Ok</a>
+                    <button type="button" class="btn btn-primary" data-dismiss="modal">OK</button>
                 </div>
             </div>
         </div>
     </div>
 
-    <div class="modal fade" id="user-modal" tabindex="-1" role="dialog" aria-labelledby="DeleteModalTitle" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered modal-sm" role="document">
+    <div class="modal fade" id="user-modal" tabindex="-1" aria-labelledby="quotation_detail_not_set" aria-hidden="true">
+        <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLongTitle">Warning!</h5>
+                    <b class="modal-title" id="exampleModalLabel">Warning!</b>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
-                <div class="modal-body">
-                    <span>Access Denied</span><br />
-                    <span>Only Manager allowed to access.</span>
+                <div class="modal-body text-center">
+                    <b>Access Denied.</b><br>
+                    Only Manager allowed to access.
                 </div>
                 <div class="modal-footer">
-                    <a class="btn btn-primary" data-dismiss="modal" class="close" style="color:white">Ok</a>
+                    <button type="button" class="btn btn-primary" data-dismiss="modal">OK</button>
                 </div>
             </div>
         </div>
@@ -313,3 +277,4 @@ session_start();
 </body>
 
 </html>
+

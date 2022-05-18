@@ -7,15 +7,15 @@ $dbname = "fsms";
 // Create connection
 $connection = new mysqli($servername, $username, $password, $dbname);
 
-$invoiceID = $_GET['id'];
-$get_invoice_query = "SELECT * FROM `invoice` WHERE invoiceID='$invoiceID'";
-$run_query = mysqli_query($connection, $get_invoice_query);
-$invoice = mysqli_fetch_assoc($run_query);
-
-if ($_SESSION['run_one_time'] == 1) {
-    $_SESSION['invoice_customerID'] = $invoice['customerID'];
-    $_SESSION['run_one_time'] = 2;
+$get_current_quotationID = "SELECT MAX(quotationID) FROM `quotation`";
+$run_query = mysqli_query($connection, $get_current_quotationID);
+$quotation = mysqli_fetch_assoc($run_query);
+if (isset($quotation)) {
+    $quotationID = $quotation["MAX(quotationID)"] + 1;
+} else {
+    $quotationID = "0";
 }
+
 ?>
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
@@ -52,12 +52,12 @@ if ($_SESSION['run_one_time'] == 1) {
                     <!-- /.col -->
 
                     <!--add client-->
-                    <div class="col-sm-4 invoice-col border-right">
+                    <div class="col-sm-4 quotation-col border-right">
                         To:
                         <a href="#" data-toggle="modal" data-target="#addCustomer" class="float-right">Add Customer</a>
                         <br>
                         <?php
-                        $get_customer_id = $_SESSION['invoice_customerID'];
+                        $get_customer_id = $_SESSION['quotation_customerID'];
 
                         if (!$get_customer_id == "") {
 
@@ -88,9 +88,9 @@ if ($_SESSION['run_one_time'] == 1) {
                     <!-- /.col -->
 
 
-                    <div class="col-sm-4 invoice-col">
-                        <!--invoice id-->
-                        <b class="col-sm-6">Invoice #<?php echo $invoiceID; ?></b><br>
+                    <div class="col-sm-4 quotation-col">
+                        <!--quotation id-->
+                        <b class="col-sm-6">Quotation #<?php echo $quotationID; ?></b><br>
                         <br>
 
                         <!--date-->
@@ -113,17 +113,9 @@ if ($_SESSION['run_one_time'] == 1) {
                                 <label for="datepicker" class="col-md-6 col-form-label">Date: </label>
 
                                 <div class="col-sm-6">
-                                    <?php
-                                    $today_date = date("Y-m-d");
-                                    $date = $invoice['date'];
+                                    <?php $today_date = date("Y-m-d"); ?>
 
-                                    if (isset($date)) {
-                                        $date = $today_date;
-                                    }
-
-                                    ?>
-
-                                    <input type="text" class="form-control form-control-sm" id="datepicker " value="<?php echo $date; ?>" name="date" required>
+                                    <input type="text" class="form-control form-control-sm mol-md-6" id="datepicker" value="<?php echo $today_date; ?>" name="date" required>
                                     <div class="invalid-feedback">Date is required.</div>
                                 </div>
 
@@ -136,7 +128,7 @@ if ($_SESSION['run_one_time'] == 1) {
                         <!--Cancel status-->
                         <div class="row col-sm-12">
                             <div class="col-sm-6">
-                                <b>Invoice Status: </b>
+                                <b>Quotation Status: </b>
                             </div>
                             <div class="col-sm-6">
                                 Not Cancel
@@ -166,16 +158,16 @@ if ($_SESSION['run_one_time'] == 1) {
                             </thead>
                             <tr>
                                 <?php
-                                $all_invoice_detail_query = "SELECT * FROM invoiceDetail WHERE invoiceID = '$invoiceID'";
-                                $all_invoice_detail = mysqli_query($connection, $all_invoice_detail_query);
-                                if ($all_invoice_detail) {
+                                $all_quotation_detail_query = "SELECT * FROM quotationDetail WHERE quotationID = '$quotationID'";
+                                $all_quotation_detail = mysqli_query($connection, $all_quotation_detail_query);
+                                if ($all_quotation_detail) {
                                     $index_number = 1;
-                                    foreach ($all_invoice_detail as $row) {
+                                    foreach ($all_quotation_detail as $row) {
 
                                 ?>
 
                                         <tbody>
-                                            <tr class="align-middle">
+                                            <tr>
                                                 <!--index number-->
                                                 <td> <?php echo $index_number; ?> </td>
 
@@ -208,8 +200,8 @@ if ($_SESSION['run_one_time'] == 1) {
                                                 <!--delete button-->
                                                 <td class="text-right">
                                                     <form action="" method="post">
-                                                        <input type="hidden" value="<?php echo $row['invoiceDetailID']; ?>" name="id">
-                                                        <button type="submit" class="btn btn-danger btn-sm m-1 editbtn mt-0" name="deleteInvoiceDetail"><i class="fas fa-trash"></i> Delete </button>
+                                                        <input type="hidden" value="<?php echo $row['quotationDetailID']; ?>" name="id">
+                                                        <button type="submit" class="btn btn-danger btn-sm m-1 editbtn" name="deleteQuotationDetail"><i class="fas fa-trash"></i> Delete </button>
                                                     </form>
                                                 </td>
 
@@ -258,8 +250,8 @@ if ($_SESSION['run_one_time'] == 1) {
                                     <th>Total:</th>
                                     <?php
                                     $total_amount = "0.00";
-                                    $invoiceDetail = "SELECT subtotal FROM invoiceDetail WHERE invoiceID='$invoiceID'";
-                                    $queryResult = mysqli_query($connection, $invoiceDetail);
+                                    $quotationDetail = "SELECT subtotal FROM quotationDetail WHERE quotationID='$quotationID'";
+                                    $queryResult = mysqli_query($connection, $quotationDetail);
                                     $amount = '0.00';
                                     if ($queryResult) {
                                         foreach ($queryResult as $row) {
@@ -284,21 +276,21 @@ if ($_SESSION['run_one_time'] == 1) {
                     <div class="col-12">
                         <?php
 
-                        $already_have_invoice_detail_query = "SELECT * FROM invoiceDetail WHERE invoiceID = '$invoiceID'";
-                        $run_query = mysqli_query($connection, $already_have_invoice_detail_query);
-                        $already_have_invoice_detail_query = mysqli_fetch_array($run_query);
+                        $already_have_quotation_detail_query = "SELECT * FROM quotationDetail WHERE quotationID = '$quotationID'";
+                        $run_query = mysqli_query($connection, $already_have_quotation_detail_query);
+                        $already_have_quotation_detail_query = mysqli_fetch_array($run_query);
 
-                        if ($_SESSION['invoice_customerID'] == "") {
+                        if ($_SESSION['quotation_customerID'] == "") {
                             echo '<button type="button" class="btn btn-success float-right mr-2" data-toggle="modal" data-target="#customer_not_set"><i class="fas fa-save"></i>
-                                Create Invoice
+                                Create Quotation
                               </button>';
-                        } else if (!isset($already_have_invoice_detail_query)) {
-                            echo '<button type="button" class="btn btn-success float-right mr-2" data-toggle="modal" data-target="#invoice_detail_not_set"><i class="fas fa-save"></i>
-                                Create Invoice
+                        } else if (!isset($already_have_quotation_detail_query)) {
+                            echo '<button type="button" class="btn btn-success float-right mr-2" data-toggle="modal" data-target="#quotation_detail_not_set"><i class="fas fa-save"></i>
+                                Create Quotation
                               </button>';
-                        } else if (isset($already_have_invoice_detail_query) && isset($_SESSION['invoice_customerID'])) {
-                            echo '<button type="submit" name="editInvoice" class="btn btn-success float-right mr-2">
-                            <i class="fas fa-save"></i> Save
+                        } else if (isset($already_have_quotation_detail_query) && isset($_SESSION['quotation_customerID'])) {
+                            echo '<button type="submit" name="createQuotation" class="btn btn-success float-right mr-2">
+                            <i class="fas fa-save"></i> Create Quotation
                             </button>';
                         }
                         ?>
@@ -309,7 +301,7 @@ if ($_SESSION['run_one_time'] == 1) {
         </form>
     </div>
 </div>
-<!-- /.invoice -->
+<!-- /.quotation -->
 
 <!-- Customer not set warning Modal -->
 <div class="modal fade" id="customer_not_set" tabindex="-1" aria-labelledby="customer_not_set" aria-hidden="true">
@@ -331,8 +323,8 @@ if ($_SESSION['run_one_time'] == 1) {
     </div>
 </div>
 
-<!-- Invoice Detail not set warning Modal -->
-<div class="modal fade" id="invoice_detail_not_set" tabindex="-1" aria-labelledby="invoice_detail_not_set" aria-hidden="true">
+<!-- Quotation Detail not set warning Modal -->
+<div class="modal fade" id="quotation_detail_not_set" tabindex="-1" aria-labelledby="quotation_detail_not_set" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
@@ -370,7 +362,7 @@ if ($_SESSION['run_one_time'] == 1) {
                             <label for="product_name">Product</label>
                             <select class="form-control" id="product_name" name="product">
                                 <?php
-                                $show_product_name_query = "SELECT name, quantity, productID FROM product";
+                                $show_product_name_query = "SELECT name, productID FROM product";
                                 $query_run = mysqli_query($connection, $show_product_name_query);
 
                                 if ($query_run) {
@@ -389,7 +381,7 @@ if ($_SESSION['run_one_time'] == 1) {
                             <label for="exampleFormControlSelect1">Quantity</label>
                             <select class="form-control" id="exampleFormControlSelect1" name="quantity">
                                 <?php
-                                for ($i = 1; $i < $product_names['quantity']; $i++) {
+                                for ($i = 1; $i < 100; $i++) {
                                     echo "<option>$i</option>";
                                 }
                                 ?>
@@ -400,7 +392,7 @@ if ($_SESSION['run_one_time'] == 1) {
             </div>
             <div class="modal-footer justify-content-between">
                 <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                <button type="submit" class="btn btn-success" name="addInvoiceDetail"><i class="fas fa-save"></i> Save</button>
+                <button type="submit" class="btn btn-success" name="addQuotationDetail"><i class="fas fa-save"></i> Save</button>
 
             </div>
             </form>
@@ -548,7 +540,6 @@ if ($_SESSION['run_one_time'] == 1) {
 </div>
 <!-- /.modal -->
 
-<!--script for form validation-->
 <script>
     // Example starter JavaScript for disabling form submissions if there are invalid fields
     (function() {
@@ -570,30 +561,9 @@ if ($_SESSION['run_one_time'] == 1) {
     })();
 </script>
 
-<!--script for form validation-->
-<script>
-    // Example starter JavaScript for disabling form submissions if there are invalid fields
-    (function() {
-        'use strict';
-        window.addEventListener('load', function() {
-            // Fetch all the forms we want to apply custom Bootstrap validation styles to
-            var forms = document.getElementsByClassName('needs-validation');
-            // Loop over them and prevent submission
-            var validation = Array.prototype.filter.call(forms, function(form) {
-                form.addEventListener('submit', function(event) {
-                    if (form.checkValidity() === false) {
-                        event.preventDefault();
-                        event.stopPropagation();
-                    }
-                    form.classList.add('was-validated');
-                }, false);
-            });
-        }, false);
-    })();
-</script>
 
 <?php
-if (isset($_POST['addInvoiceDetail'])) {
+if (isset($_POST['addQuotationDetail'])) {
     $product = $_POST['product'];
     $quantity = $_POST['quantity'];
 
@@ -603,18 +573,18 @@ if (isset($_POST['addInvoiceDetail'])) {
 
     $subtotal = $quantity * $price['price'];
 
-    $insert_invoice_detail_query = "INSERT INTO `invoicedetail` (`invoiceID`, `quantity`, `subtotal`, `productID`) VALUES ('$invoiceID', '$quantity', '$subtotal', '$product')";;
+    $insert_quotation_detail_query = "INSERT INTO `quotationdetail` (`quotationID`, `quantity`, `subtotal`, `productID`) VALUES ('$quotationID', '$quantity', '$subtotal', '$product')";;
 
-    $run_query = mysqli_query($connection, $insert_invoice_detail_query);
+    $run_query = mysqli_query($connection, $insert_quotation_detail_query);
 
     echo "<meta http-equiv='refresh' content='0'>";
 }
 
-if (isset($_POST['deleteInvoiceDetail'])) {
-    $invoice_detail_id = $_POST["id"];
+if (isset($_POST['deleteQuotationDetail'])) {
+    $quotation_detail_id = $_POST["id"];
 
-    $delete_invoice_details_query = "DELETE FROM invoiceDetail WHERE invoiceDetailID='$invoice_detail_id'";
-    $run_query = mysqli_query($connection, $delete_invoice_details_query);
+    $delete_quotation_details_query = "DELETE FROM quotationDetail WHERE quotationDetailID='$quotation_detail_id'";
+    $run_query = mysqli_query($connection, $delete_quotation_details_query);
 
     echo "<meta http-equiv='refresh' content='0'>";
 }
@@ -634,26 +604,27 @@ if (isset($_POST['createCustomer'])) {
 }
 
 if (isset($_POST['addCustomer'])) {
-    $_SESSION["invoice_customerID"] = $_POST['customer'];
+    $_SESSION["quotation_customerID"] = $_POST['customer'];
 
     echo "<meta http-equiv='refresh' content='0'>";
 }
 
-if (isset($_POST['editInvoice'])) {
+if (isset($_POST['createQuotation'])) {
     $date = $_POST['date'];
-    $customerID = $_SESSION['invoice_customerID'];
+    $customerID = $_SESSION['quotation_customerID'];
     $total_amount = $_POST['total_amount'];
     $cancel_status = "Not Cancel";
 
-    $edit_invoice_query = "UPDATE `invoice` SET `date` = '$date', `customerID` = '$customerID', `total_amount` = '$total_amount' WHERE `invoiceID` = '$invoiceID'";;
-    $run_query = mysqli_query($connection, $edit_invoice_query);
+    $create_quotation_query = "INSERT INTO `quotation` (`date`, `customerID`, `total_amount`, `cancel_status`) VALUES ('$date', '$customerID', '$total_amount', '$cancel_status')";
+    $run_query = mysqli_query($connection, $create_quotation_query);
 
     if ($run_query) {
-        $_SESSION['invoice_customerID'] = "";
-        echo ("<script>location.href = 'Invoice-Index.php';</script>");
+        $_SESSION['quotation_customerID'] = "";                                   
+        echo ("<script>location.href = 'Quotation-Index.php';</script>");
         exit();
     } else {
-        $_SESSION['invoice_customerID'] = "";
+        $_SESSION['quotation_customerID'] = "";
+        echo "Cannot save data.";
     }
 }
 ?>

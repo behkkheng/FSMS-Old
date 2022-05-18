@@ -7,15 +7,15 @@ $dbname = "fsms";
 // Create connection
 $connection = new mysqli($servername, $username, $password, $dbname);
 
-$invoiceID = $_GET['id'];
-$get_invoice_query = "SELECT * FROM `invoice` WHERE invoiceID='$invoiceID'";
-$run_query = mysqli_query($connection, $get_invoice_query);
-$invoice = mysqli_fetch_assoc($run_query);
-
-if ($_SESSION['run_one_time'] == 1) {
-    $_SESSION['invoice_customerID'] = $invoice['customerID'];
-    $_SESSION['run_one_time'] = 2;
+$get_current_deliveryOrderID = "SELECT MAX(deliveryOrderID) FROM `deliveryOrder`";
+$run_query = mysqli_query($connection, $get_current_deliveryOrderID);
+$deliveryOrder = mysqli_fetch_assoc($run_query);
+if (isset($deliveryOrder)) {
+    $deliveryOrderID = $deliveryOrder["MAX(deliveryOrderID)"] + 1;
+} else {
+    $deliveryOrderID = "0";
 }
+
 ?>
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
@@ -36,8 +36,8 @@ if ($_SESSION['run_one_time'] == 1) {
                     <!-- /.col -->
                 </div>
                 <!-- info row -->
-                <div class="row invoice-info">
-                    <div class="col-sm-4 invoice-col border-right">
+                <div class="row deliveryOrder-info">
+                    <div class="col-sm-4 deliveryOrder-col border-right">
                         From:
                         <address>
                             <strong>Lean Aik Furniture</strong><br>
@@ -52,12 +52,12 @@ if ($_SESSION['run_one_time'] == 1) {
                     <!-- /.col -->
 
                     <!--add client-->
-                    <div class="col-sm-4 invoice-col border-right">
+                    <div class="col-sm-4 deliveryOrder-col border-right">
                         To:
                         <a href="#" data-toggle="modal" data-target="#addCustomer" class="float-right">Add Customer</a>
                         <br>
                         <?php
-                        $get_customer_id = $_SESSION['invoice_customerID'];
+                        $get_customer_id = $_SESSION['deliveryOrder_customerID'];
 
                         if (!$get_customer_id == "") {
 
@@ -88,9 +88,9 @@ if ($_SESSION['run_one_time'] == 1) {
                     <!-- /.col -->
 
 
-                    <div class="col-sm-4 invoice-col">
-                        <!--invoice id-->
-                        <b class="col-sm-6">Invoice #<?php echo $invoiceID; ?></b><br>
+                    <div class="col-sm-4 deliveryOrder-col">
+                        <!--deliveryOrder id-->
+                        <b class="col-sm-6">Delivery Order #<?php echo $deliveryOrderID; ?></b><br>
                         <br>
 
                         <!--date-->
@@ -113,17 +113,9 @@ if ($_SESSION['run_one_time'] == 1) {
                                 <label for="datepicker" class="col-md-6 col-form-label">Date: </label>
 
                                 <div class="col-sm-6">
-                                    <?php
-                                    $today_date = date("Y-m-d");
-                                    $date = $invoice['date'];
+                                    <?php $today_date = date("Y-m-d"); ?>
 
-                                    if (isset($date)) {
-                                        $date = $today_date;
-                                    }
-
-                                    ?>
-
-                                    <input type="text" class="form-control form-control-sm" id="datepicker " value="<?php echo $date; ?>" name="date" required>
+                                    <input type="text" class="form-control form-control-sm mol-md-6" id="datepicker" value="<?php echo $today_date; ?>" name="date" required>
                                     <div class="invalid-feedback">Date is required.</div>
                                 </div>
 
@@ -136,7 +128,7 @@ if ($_SESSION['run_one_time'] == 1) {
                         <!--Cancel status-->
                         <div class="row col-sm-12">
                             <div class="col-sm-6">
-                                <b>Invoice Status: </b>
+                                <b>Delivery Order Status: </b>
                             </div>
                             <div class="col-sm-6">
                                 Not Cancel
@@ -159,23 +151,21 @@ if ($_SESSION['run_one_time'] == 1) {
                                     <th>Product ID</th>
                                     <th>Product</th>
                                     <th>Qty.</th>
-                                    <th>Unit Price</th>
-                                    <th>Subtotal</th>
                                     <th></th>
                                 </tr>
                             </thead>
                             <tr>
                                 <?php
-                                $all_invoice_detail_query = "SELECT * FROM invoiceDetail WHERE invoiceID = '$invoiceID'";
-                                $all_invoice_detail = mysqli_query($connection, $all_invoice_detail_query);
-                                if ($all_invoice_detail) {
+                                $all_deliveryOrder_detail_query = "SELECT * FROM deliveryOrderDetail WHERE deliveryOrderID = '$deliveryOrderID'";
+                                $all_deliveryOrder_detail = mysqli_query($connection, $all_deliveryOrder_detail_query);
+                                if ($all_deliveryOrder_detail) {
                                     $index_number = 1;
-                                    foreach ($all_invoice_detail as $row) {
+                                    foreach ($all_deliveryOrder_detail as $row) {
 
                                 ?>
 
                                         <tbody>
-                                            <tr class="align-middle">
+                                            <tr>
                                                 <!--index number-->
                                                 <td> <?php echo $index_number; ?> </td>
 
@@ -194,22 +184,11 @@ if ($_SESSION['run_one_time'] == 1) {
                                                 <!--quantity-->
                                                 <td> <?php echo $row['quantity']; ?> </td>
 
-                                                <!--product unit price-->
-                                                <?php
-                                                $get_product_price = "SELECT price FROM product WHERE productID = '$productID'";
-                                                $run_query = mysqli_query($connection, $get_product_price);
-                                                $product_price = mysqli_fetch_assoc($run_query);
-                                                ?>
-                                                <td> <?php echo $product_price['price']; ?> </td>
-
-                                                <!--Subtotal-->
-                                                <td><b>RM <?php echo $row['subtotal']; ?></b></td>
-
                                                 <!--delete button-->
                                                 <td class="text-right">
                                                     <form action="" method="post">
-                                                        <input type="hidden" value="<?php echo $row['invoiceDetailID']; ?>" name="id">
-                                                        <button type="submit" class="btn btn-danger btn-sm m-1 editbtn mt-0" name="deleteInvoiceDetail"><i class="fas fa-trash"></i> Delete </button>
+                                                        <input type="hidden" value="<?php echo $row['deliveryOrderDetailID']; ?>" name="id">
+                                                        <button type="submit" class="btn btn-danger btn-sm m-1 editbtn" name="deleteDeliveryOrderDetail"><i class="fas fa-trash"></i> Delete </button>
                                                     </form>
                                                 </td>
 
@@ -250,26 +229,24 @@ if ($_SESSION['run_one_time'] == 1) {
                         <div class="table-responsive">
                             <table class="table">
                                 <tr>
-                                    <th class="lead" style="border: 0;">Amount</th>
+                                    <th class="lead" style="border: 0;">Amount of Product</th>
                                 </tr>
                                 <tr>
 
-                                    <!--total amount-->
-                                    <th>Total:</th>
+                                    <!--total product-->
+                                    <th>Total Number of Product:</th>
                                     <?php
-                                    $total_amount = "0.00";
-                                    $invoiceDetail = "SELECT subtotal FROM invoiceDetail WHERE invoiceID='$invoiceID'";
-                                    $queryResult = mysqli_query($connection, $invoiceDetail);
-                                    $amount = '0.00';
+                                    $product_quantity = 0;
+                                    $deliveryOrderDetail = "SELECT quantity FROM deliveryOrderDetail WHERE deliveryOrderID='$deliveryOrderID'";
+                                    $queryResult = mysqli_query($connection, $deliveryOrderDetail);
                                     if ($queryResult) {
                                         foreach ($queryResult as $row) {
 
-                                            $amount = $amount + $row['subtotal'];
-                                            $total_amount = number_format((float)$amount, 2, '.', '');
+                                            $product_quantity = $product_quantity + $row['quantity'];
                                         }
                                     }
                                     ?>
-                                    <td><b>RM <?php echo "$total_amount"; ?></b></td>
+                                    <td><b><?php echo "$product_quantity"; ?></b></td>
 
                                 </tr>
                             </table>
@@ -277,28 +254,27 @@ if ($_SESSION['run_one_time'] == 1) {
                     </div>
                     <!-- /.col -->
                 </div>
-                <input type="hidden" value="<?php echo "$total_amount"; ?>" name="total_amount">
                 <!-- /.row -->
                 <!-- this row will not appear when printing -->
                 <div class="row no-print">
                     <div class="col-12">
                         <?php
 
-                        $already_have_invoice_detail_query = "SELECT * FROM invoiceDetail WHERE invoiceID = '$invoiceID'";
-                        $run_query = mysqli_query($connection, $already_have_invoice_detail_query);
-                        $already_have_invoice_detail_query = mysqli_fetch_array($run_query);
+                        $already_have_deliveryOrder_detail_query = "SELECT * FROM deliveryOrderDetail WHERE deliveryOrderID = '$deliveryOrderID'";
+                        $run_query = mysqli_query($connection, $already_have_deliveryOrder_detail_query);
+                        $already_have_deliveryOrder_detail_query = mysqli_fetch_array($run_query);
 
-                        if ($_SESSION['invoice_customerID'] == "") {
+                        if ($_SESSION['deliveryOrder_customerID'] == "") {
                             echo '<button type="button" class="btn btn-success float-right mr-2" data-toggle="modal" data-target="#customer_not_set"><i class="fas fa-save"></i>
-                                Create Invoice
+                                Create Delivery Order
                               </button>';
-                        } else if (!isset($already_have_invoice_detail_query)) {
-                            echo '<button type="button" class="btn btn-success float-right mr-2" data-toggle="modal" data-target="#invoice_detail_not_set"><i class="fas fa-save"></i>
-                                Create Invoice
+                        } else if (!isset($already_have_deliveryOrder_detail_query)) {
+                            echo '<button type="button" class="btn btn-success float-right mr-2" data-toggle="modal" data-target="#deliveryOrder_detail_not_set"><i class="fas fa-save"></i>
+                                Create Delivery Order
                               </button>';
-                        } else if (isset($already_have_invoice_detail_query) && isset($_SESSION['invoice_customerID'])) {
-                            echo '<button type="submit" name="editInvoice" class="btn btn-success float-right mr-2">
-                            <i class="fas fa-save"></i> Save
+                        } else if (isset($already_have_deliveryOrder_detail_query) && isset($_SESSION['deliveryOrder_customerID'])) {
+                            echo '<button type="submit" name="createDeliveryOrder" class="btn btn-success float-right mr-2">
+                            <i class="fas fa-save"></i> Create Delivery Order
                             </button>';
                         }
                         ?>
@@ -309,7 +285,7 @@ if ($_SESSION['run_one_time'] == 1) {
         </form>
     </div>
 </div>
-<!-- /.invoice -->
+<!-- /.deliveryOrder -->
 
 <!-- Customer not set warning Modal -->
 <div class="modal fade" id="customer_not_set" tabindex="-1" aria-labelledby="customer_not_set" aria-hidden="true">
@@ -331,8 +307,8 @@ if ($_SESSION['run_one_time'] == 1) {
     </div>
 </div>
 
-<!-- Invoice Detail not set warning Modal -->
-<div class="modal fade" id="invoice_detail_not_set" tabindex="-1" aria-labelledby="invoice_detail_not_set" aria-hidden="true">
+<!-- Delivery Order Detail not set warning Modal -->
+<div class="modal fade" id="deliveryOrder_detail_not_set" tabindex="-1" aria-labelledby="deliveryOrder_detail_not_set" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
@@ -370,7 +346,7 @@ if ($_SESSION['run_one_time'] == 1) {
                             <label for="product_name">Product</label>
                             <select class="form-control" id="product_name" name="product">
                                 <?php
-                                $show_product_name_query = "SELECT name, quantity, productID FROM product";
+                                $show_product_name_query = "SELECT name, productID FROM product";
                                 $query_run = mysqli_query($connection, $show_product_name_query);
 
                                 if ($query_run) {
@@ -389,7 +365,7 @@ if ($_SESSION['run_one_time'] == 1) {
                             <label for="exampleFormControlSelect1">Quantity</label>
                             <select class="form-control" id="exampleFormControlSelect1" name="quantity">
                                 <?php
-                                for ($i = 1; $i < $product_names['quantity']; $i++) {
+                                for ($i = 1; $i < 100; $i++) {
                                     echo "<option>$i</option>";
                                 }
                                 ?>
@@ -400,7 +376,7 @@ if ($_SESSION['run_one_time'] == 1) {
             </div>
             <div class="modal-footer justify-content-between">
                 <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                <button type="submit" class="btn btn-success" name="addInvoiceDetail"><i class="fas fa-save"></i> Save</button>
+                <button type="submit" class="btn btn-success" name="addDeliveryOrderDetail"><i class="fas fa-save"></i> Save</button>
 
             </div>
             </form>
@@ -548,7 +524,6 @@ if ($_SESSION['run_one_time'] == 1) {
 </div>
 <!-- /.modal -->
 
-<!--script for form validation-->
 <script>
     // Example starter JavaScript for disabling form submissions if there are invalid fields
     (function() {
@@ -570,51 +545,24 @@ if ($_SESSION['run_one_time'] == 1) {
     })();
 </script>
 
-<!--script for form validation-->
-<script>
-    // Example starter JavaScript for disabling form submissions if there are invalid fields
-    (function() {
-        'use strict';
-        window.addEventListener('load', function() {
-            // Fetch all the forms we want to apply custom Bootstrap validation styles to
-            var forms = document.getElementsByClassName('needs-validation');
-            // Loop over them and prevent submission
-            var validation = Array.prototype.filter.call(forms, function(form) {
-                form.addEventListener('submit', function(event) {
-                    if (form.checkValidity() === false) {
-                        event.preventDefault();
-                        event.stopPropagation();
-                    }
-                    form.classList.add('was-validated');
-                }, false);
-            });
-        }, false);
-    })();
-</script>
 
 <?php
-if (isset($_POST['addInvoiceDetail'])) {
+if (isset($_POST['addDeliveryOrderDetail'])) {
     $product = $_POST['product'];
     $quantity = $_POST['quantity'];
 
-    $get_product_price_query = "SELECT price FROM product WHERE productID='$product'";
-    $run_query = mysqli_query($connection, $get_product_price_query);
-    $price = mysqli_fetch_assoc($run_query);
+    $insert_deliveryOrder_detail_query = "INSERT INTO `deliveryOrderdetail` (`deliveryOrderID`, `quantity`, `productID`) VALUES ('$deliveryOrderID', '$quantity', '$product')";;
 
-    $subtotal = $quantity * $price['price'];
-
-    $insert_invoice_detail_query = "INSERT INTO `invoicedetail` (`invoiceID`, `quantity`, `subtotal`, `productID`) VALUES ('$invoiceID', '$quantity', '$subtotal', '$product')";;
-
-    $run_query = mysqli_query($connection, $insert_invoice_detail_query);
+    $run_query = mysqli_query($connection, $insert_deliveryOrder_detail_query);
 
     echo "<meta http-equiv='refresh' content='0'>";
 }
 
-if (isset($_POST['deleteInvoiceDetail'])) {
-    $invoice_detail_id = $_POST["id"];
+if (isset($_POST['deleteDeliveryOrderDetail'])) {
+    $deliveryOrder_detail_id = $_POST["id"];
 
-    $delete_invoice_details_query = "DELETE FROM invoiceDetail WHERE invoiceDetailID='$invoice_detail_id'";
-    $run_query = mysqli_query($connection, $delete_invoice_details_query);
+    $delete_deliveryOrder_details_query = "DELETE FROM deliveryOrderDetail WHERE deliveryOrderDetailID='$deliveryOrder_detail_id'";
+    $run_query = mysqli_query($connection, $delete_deliveryOrder_details_query);
 
     echo "<meta http-equiv='refresh' content='0'>";
 }
@@ -634,26 +582,26 @@ if (isset($_POST['createCustomer'])) {
 }
 
 if (isset($_POST['addCustomer'])) {
-    $_SESSION["invoice_customerID"] = $_POST['customer'];
+    $_SESSION["deliveryOrder_customerID"] = $_POST['customer'];
 
     echo "<meta http-equiv='refresh' content='0'>";
 }
 
-if (isset($_POST['editInvoice'])) {
+if (isset($_POST['createDeliveryOrder'])) {
     $date = $_POST['date'];
-    $customerID = $_SESSION['invoice_customerID'];
-    $total_amount = $_POST['total_amount'];
+    $customerID = $_SESSION['deliveryOrder_customerID'];
     $cancel_status = "Not Cancel";
 
-    $edit_invoice_query = "UPDATE `invoice` SET `date` = '$date', `customerID` = '$customerID', `total_amount` = '$total_amount' WHERE `invoiceID` = '$invoiceID'";;
-    $run_query = mysqli_query($connection, $edit_invoice_query);
+    $create_deliveryOrder_query = "INSERT INTO `deliveryOrder` (`date`, `customerID`, `product_quantity`, `cancel_status`) VALUES ('$date', '$customerID', '$product_quantity', '$cancel_status')";
+    $run_query = mysqli_query($connection, $create_deliveryOrder_query);
 
     if ($run_query) {
-        $_SESSION['invoice_customerID'] = "";
-        echo ("<script>location.href = 'Invoice-Index.php';</script>");
+        $_SESSION['deliveryOrder_customerID'] = "";                                   
+        echo ("<script>location.href = 'DeliveryOrder-Index.php';</script>");
         exit();
     } else {
-        $_SESSION['invoice_customerID'] = "";
+        $_SESSION['deliveryOrder_customerID'] = "";
+        echo "Cannot save data.";
     }
 }
 ?>
