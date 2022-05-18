@@ -22,22 +22,22 @@
                 $row = mysqli_fetch_array($result);
                 // output data of each row
                 echo '
-                    <dt class="col-sm-2">Name: </dt>
-                    <dd class="col-sm-10">' . $row["name"] . '</dd>
-                    <dt class="col-sm-2">Username: </dt>
-                    <dd class="col-sm-10">' . $row["username"] . '</dd>
-                    <dt class="col-sm-2">Handphone Number: </dt>
-                    <dd class="col-sm-10">' . $row["hpNo"] . '</dd>
-                    <dt class="col-sm-2">Address: </dt>
-                    <dd class="col-sm-10">' . $row["address"] . '</dd>
-                    <dt class="col-sm-2">City: </dt>
-                    <dd class="col-sm-10">' . $row["city"] . '</dd>
-                    <dt class="col-sm-2">State: </dt>
-                    <dd class="col-sm-10">' . $row["state"] . '</dd>
-                    <dt class="col-sm-2">Postcode: </dt>
-                    <dd class="col-sm-10">' . $row["postcode"] . '</dd>
-                    <dt class="col-sm-2">Role: </dt>
-                    <dd class="col-sm-10">' . $row["role"] . '</dd>';
+                    <dt class="col-sm-4">Name: </dt>
+                    <dd class="col-sm-8">' . $row["name"] . '</dd>
+                    <dt class="col-sm-4">Username: </dt>
+                    <dd class="col-sm-8">' . $row["username"] . '</dd>
+                    <dt class="col-sm-4">Handphone Number: </dt>
+                    <dd class="col-sm-8">' . $row["hpNo"] . '</dd>
+                    <dt class="col-sm-4">Address: </dt>
+                    <dd class="col-sm-8">' . $row["address"] . '</dd>
+                    <dt class="col-sm-4">City: </dt>
+                    <dd class="col-sm-8">' . $row["city"] . '</dd>
+                    <dt class="col-sm-4">State: </dt>
+                    <dd class="col-sm-8">' . $row["state"] . '</dd>
+                    <dt class="col-sm-4">Postcode: </dt>
+                    <dd class="col-sm-8">' . $row["postcode"] . '</dd>
+                    <dt class="col-sm-4">Role: </dt>
+                    <dd class="col-sm-8">' . $row["role"] . '</dd>';
             } else {
                 echo "0 results";
             }
@@ -45,15 +45,15 @@
             ?>
         </dl>
 
-        <div class="row">
+        <div class="row float-right">
             <form action="\FSMS\User\User-Edit.php" method="get">
                 <input type="hidden" value="<?php echo $row['employeeID']; ?>" name="id">
-                <button type="submit" class="btn btn-info btn-sm m-1 editbtn"><i class="fas fa-pencil-alt"></i> Edit </button>
+                <button type="submit" class="btn btn-info editbtn float-right m-1"><i class="fas fa-pencil-alt"></i> Edit </button>
             </form>
 
             <form class="">
                 <input type="hidden" value="<?php echo $row['employeeID']; ?>" name="id">
-                <button type="button" class="btn btn-danger deletebtn btn-sm m-1"><i class="fas fa-trash"></i> Delete </button>
+                <button type="button" class="btn btn-danger deletebtn float-right m-1 mr-3"><i class="fas fa-trash"></i> Delete </button>
             </form>
         </div>
 
@@ -78,7 +78,7 @@
 
                 <div class="modal-body">
 
-                    <input type="hidden" name="delete_id" id="delete_id">
+                    <input type="hidden" name="delete_id" value="<?php echo $id ?>">
 
                     <h5 class="text-center"> Are you sure want to delete?</h5>
                 </div>

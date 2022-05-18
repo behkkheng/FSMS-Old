@@ -22,7 +22,7 @@
             $query = "SELECT * FROM product";
             $query_run = mysqli_query($connection, $query);
             ?>
-            <table id="datatableid" class="table">
+            <table id="datatableid" class="table text-center">
                 <thead>
                     <tr>
                         <th scope="col"> ID</th>
@@ -43,30 +43,24 @@
                                 <td> <?php echo $row['name']; ?> </td>
                                 <td> <?php echo $row['price']; ?> </td>
                                 <td> <?php echo $row['quantity']; ?> </td>
-                                <td></td>
+                                <td class="" style="width: 20%">
+                                    <div class="row float-right mr-1">
+                                        <form action="\FSMS\Product\Product-Detail.php" method="get">
+                                            <input type="hidden" value="<?php echo $row['productID']; ?>" name="id">
+                                            <button type="submit" class="btn btn-primary btn-sm m-1 viewbtn"><i class="fas fa-folder"></i> View </button>
+                                        </form>
 
-                                <div class="row">
-                                    <td class="text-right">
-                                        <div class="row">
-                                            <form action="\FSMS\Product\Product-Detail.php" method="get">
-                                                <input type="hidden" value="<?php echo $row['productID']; ?>" name="id">
-                                                <button type="submit" class="btn btn-primary btn-sm m-1 viewbtn"><i class="fas fa-folder"></i> View </button>
-                                            </form>
+                                        <form action="\FSMS\Product\Product-Edit.php" method="get">
+                                            <input type="hidden" value="<?php echo $row['productID']; ?>" name="id">
+                                            <button type="submit" class="btn btn-info btn-sm m-1 editbtn"><i class="fas fa-pencil-alt"></i> Edit </button>
+                                        </form>
 
-                                            <form action="\FSMS\Product\Product-Edit.php" method="get">
-                                                <input type="hidden" value="<?php echo $row['productID']; ?>" name="id">
-                                                <button type="submit" class="btn btn-info btn-sm m-1 editbtn"><i class="fas fa-pencil-alt"></i> Edit </button>
-                                            </form>
-
-                                            <form class="">
-                                                <input type="hidden" value="<?php echo $row['productID']; ?>" name="id">
-                                                <button type="button" class="btn btn-danger deletebtn btn-sm m-1"><i class="fas fa-trash"></i> Delete </button>
-                                            </form>
-
-                                        </div>
-                                    </td>
-                                </div>
-
+                                        <form class="">
+                                            <input type="hidden" value="<?php echo $row['productID']; ?>" name="id">
+                                            <button type="button" class="btn btn-danger deletebtn btn-sm m-1"><i class="fas fa-trash"></i> Delete </button>
+                                        </form>
+                                    </div>
+                                </td>
                             </tr>
                         </tbody>
 

@@ -66,15 +66,20 @@ if ($_SESSION['run_one_time'] == 1) {
 
                             $customer_detail = mysqli_fetch_array($run_query);
 
+                            if ($customer_detail != null) { ?>
 
+                                <address>
+                                    <strong><?php echo $customer_detail['name']; ?></strong><br>
+                                    <?php echo $customer_detail['address']; ?>,<br />
+                                    <?php echo $customer_detail['postcode']; ?>, <?php echo $customer_detail['city']; ?>,<br> <?php echo $customer_detail['state']; ?><br />
+                                    Phone: <?php echo $customer_detail['hpNo']; ?><br>
+                                </address>
+                            <?php
+                            } else {
+                                echo "<br><b>Customer is either deleted or not exist.</b>";
+                            }
 
-                        ?>
-                            <address>
-                                <strong><?php echo $customer_detail['name']; ?></strong><br>
-                                <?php echo $customer_detail['address']; ?>,<br />
-                                <?php echo $customer_detail['postcode']; ?>, <?php echo $customer_detail['city']; ?>,<br> <?php echo $customer_detail['state']; ?><br />
-                                Phone: <?php echo $customer_detail['hpNo']; ?><br>
-                            </address>
+                            ?>
 
 
                         <?php
@@ -187,7 +192,14 @@ if ($_SESSION['run_one_time'] == 1) {
                                                 $run_query = mysqli_query($connection, $get_product_name);
                                                 $product_name = mysqli_fetch_assoc($run_query);
                                                 ?>
-                                                <td> <?php echo $product_name["name"]; ?> </td>
+                                                <td>
+                                                    <?php
+                                                    if ($product_name != null) {
+                                                        echo $product_name["name"];
+                                                    } else {
+                                                        echo "<b>Product is either deleted or not exist.</b>";
+                                                    }  ?>
+                                                </td>
 
                                                 <!--quantity-->
                                                 <td> <?php echo $row['quantity']; ?> </td>
@@ -237,7 +249,7 @@ if ($_SESSION['run_one_time'] == 1) {
                     <div class="col-5">
                         <div class="table-responsive">
                             <table class="table">
-                            <tr>
+                                <tr>
                                     <th class="lead" style="border: 0;">Amount of Product</th>
                                 </tr>
                                 <tr>

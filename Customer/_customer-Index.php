@@ -4,7 +4,7 @@
             <div class="card-header">
                 <div class="row">
                     <div class="col-md-6 offset-md-6">
-                        <a class="btn btn-primary float-right" href="Customer-Create.php" role="button">New Customer</a>
+                        <a class="btn btn-primary float-right" href="Customer-Create.php" role="button"><i class="bi bi-plus-circle-fill"></i> New Customer</a>
                     </div>
                 </div>
             </div>
@@ -24,7 +24,7 @@
             ?>
             <table id="datatableid" class="table ml-3">
                 <thead>
-                    <tr>
+                    <tr class="text-center">
                         <th scope="col"> ID</th>
                         <th scope="col">Name</th>
                         <th scope="col">hpNo</th>
@@ -38,34 +38,33 @@
                 ?>
 
                         <tbody>
-                            <tr>
+                            <tr class="text-center">
                                 <td> <?php echo $row['customerID']; ?> </td>
                                 <td> <?php echo $row['name']; ?> </td>
                                 <td> <?php echo $row['hpNo']; ?> </td>
                                 <td> <?php echo $row['city']; ?> </td>
                                 <td></td>
 
-                                <div class="row">
-                                    <td class="text-right">
-                                        <div class="row">
-                                            <form action="\FSMS\Customer\Customer-Detail.php" method="get">
-                                                <input type="hidden" value="<?php echo $row['customerID']; ?>" name="id">
-                                                <button type="submit" class="btn btn-primary btn-sm m-1 viewbtn"><i class="fas fa-folder"></i> View </button>
-                                            </form>
 
-                                            <form action="\FSMS\Customer\Customer-Edit.php" method="get">
-                                                <input type="hidden" value="<?php echo $row['customerID']; ?>" name="id">
-                                                <button type="submit" class="btn btn-info btn-sm m-1 editbtn"><i class="fas fa-pencil-alt"></i> Edit </button>
-                                            </form>
+                                <td class="" style="width: 20%">
+                                    <div class="row float-right mr-4">
+                                        <form action="\FSMS\Customer\Customer-Detail.php" method="get">
+                                            <input type="hidden" value="<?php echo $row['customerID']; ?>" name="id">
+                                            <button type="submit" class="btn btn-primary btn-sm m-1 viewbtn"><i class="fas fa-folder"></i> View </button>
+                                        </form>
 
-                                            <form class="">
-                                                <input type="hidden" value="<?php echo $row['customerID']; ?>" name="id">
-                                                <button type="button" class="btn btn-danger deletebtn btn-sm m-1"><i class="fas fa-trash"></i> Delete </button>
-                                            </form>
+                                        <form action="\FSMS\Customer\Customer-Edit.php" method="get">
+                                            <input type="hidden" value="<?php echo $row['customerID']; ?>" name="id">
+                                            <button type="submit" class="btn btn-info btn-sm m-1 editbtn"><i class="fas fa-pencil-alt"></i> Edit </button>
+                                        </form>
 
-                                        </div>
-                                    </td>
-                                </div>
+                                        <form class="">
+                                            <input type="hidden" value="<?php echo $row['customerID']; ?>" name="id">
+                                            <button type="button" class="btn btn-danger deletebtn btn-sm m-1"><i class="fas fa-trash"></i> Delete </button>
+                                        </form>
+
+                                    </div>
+                                </td>
 
                             </tr>
                         </tbody>

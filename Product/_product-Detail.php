@@ -23,9 +23,9 @@
                     $row = mysqli_fetch_array($result);
                     // output data of each row
                     echo '
-                <h3 class="d-inline-block d-sm-none">
+                <h2 class="d-inline-block d-sm-none">
                 ' . $row["name"] . '
-                </h3>
+                </h2>
                 <div class="col-12">';
                     echo '<img class="img-thumbnail" src="' . $row["productPath"] . '"/>
 
@@ -33,28 +33,30 @@
                 
             </div>
             <div class="col-12 col-sm-6">
-                <h3 class="my-3">' . $row["name"] . '</h3>
+                <h2 class="my-3">' . $row["name"] . '</h2>
                 <p>' . $row["description"] . '</p>
 
                 <hr>
 
                 <div class="bg-gray py-2 px-3 mt-4">
-                    <h2 class="mb-0">' . $row["price"] . '</h2>
+                    <h2 class="">RM ' . $row["price"] . '</h2>
                 </div>';
                 } else {
                     echo "0 results";
                 }
                 ?>
 
+                <br>
+
                 <div class="row">
                     <form action="\FSMS\Product\Product-Edit.php" method="get">
                         <input type="hidden" value="<?php echo $row['productID']; ?>" name="id">
-                        <button type="submit" class="btn btn-info btn-sm m-1 editbtn"><i class="fas fa-pencil-alt"></i> Edit </button>
+                        <button type="submit" class="btn btn-info editbtn ml-3"><i class="fas fa-pencil-alt"></i> Edit </button>
                     </form>
 
                     <form>
                         <input type="hidden" value="<?php echo $row["productID"]; ?>" name="id">
-                        <button type="button" class="btn btn-danger deletebtn btn-sm m-1"><i class="fas fa-trash"></i> Delete </button>
+                        <button type="button" class="btn btn-danger deletebtn ml-3"><i class="fas fa-trash"></i> Delete </button>
                     </form>
                 </div>
 

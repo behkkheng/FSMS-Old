@@ -25,7 +25,7 @@
                             <label for="price">Price</label>
                             <div class="input-group-prepend">
                                 <span class="input-group-text">RM</span>
-                                <input type="text" class="form-control" id="price" name="price" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default">
+                                <input type="text" class="form-control" id="price" name="price" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default" required>
                             </div>
                             <div class="invalid-feedback">Price is required.</div>
                         </div>
@@ -54,7 +54,7 @@
                             </div>
                         </div>
 
-                        <button type="submit" class="btn btn-primary" name="submit">Create</button>
+                        <button type="submit" class="btn btn-primary float-right mt-1" name="submit">Create</button>
                     </form>
                 </div>
             </div>

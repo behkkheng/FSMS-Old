@@ -53,13 +53,20 @@ $quotation = mysqli_fetch_assoc($run_query);
 
                     $customer_detail = mysqli_fetch_array($run_query);
 
+                    if ($customer_detail != null) { ?>
+
+                        <address>
+                            <strong><?php echo $customer_detail['name']; ?></strong><br>
+                            <?php echo $customer_detail['address']; ?>,<br />
+                            <?php echo $customer_detail['postcode']; ?>, <?php echo $customer_detail['city']; ?>,<br> <?php echo $customer_detail['state']; ?><br />
+                            Phone: <?php echo $customer_detail['hpNo']; ?><br>
+                        </address>
+                    <?php
+                    } else {
+                        echo "<br><b>Customer is either deleted or not exist.</b>";
+                    }
+
                     ?>
-                    <address>
-                        <strong><?php echo $customer_detail['name']; ?></strong><br>
-                        <?php echo $customer_detail['address']; ?>,<br />
-                        <?php echo $customer_detail['postcode']; ?>, <?php echo $customer_detail['city']; ?>,<br> <?php echo $customer_detail['state']; ?><br />
-                        Phone: <?php echo $customer_detail['hpNo']; ?><br>
-                    </address>
 
                 </div>
 
@@ -134,7 +141,17 @@ $quotation = mysqli_fetch_assoc($run_query);
                                             <td> <?php echo $index_number; ?> </td>
 
                                             <!--product id-->
-                                            <td> <?php echo $row['productID']; ?> </td>
+                                            <td>
+                                                <?php
+                                                $id = $row['productID'];;
+                                                if ($id != null) {
+                                                ?>
+                                                    <?php echo $row['productID']; ?>
+                                                <?php
+                                                } else {
+                                                    echo "<b>Product is either deleted or not exist.</b>";
+                                                }  ?>
+                                            </td>
 
                                             <!--name of product-->
                                             <?php
@@ -144,7 +161,13 @@ $quotation = mysqli_fetch_assoc($run_query);
                                             $run_query = mysqli_query($connection, $get_product_name);
                                             $product_name = mysqli_fetch_array($run_query);
                                             ?>
-                                            <td> <?php echo $product_name["name"]; ?> </td>
+                                            <td> <?php
+                                                    if ($product_name != null) {
+                                                        echo $product_name["name"];
+                                                    } else {
+                                                        echo "<b>Product is either deleted or not exist.</b>";
+                                                    }  ?>
+                                            </td>
 
                                             <!--quantity-->
                                             <td> <?php echo $row['quantity']; ?> </td>
@@ -155,13 +178,31 @@ $quotation = mysqli_fetch_assoc($run_query);
                                             $run_query = mysqli_query($connection, $get_product_price);
                                             $product_price = mysqli_fetch_array($run_query);
                                             ?>
-                                            <td>RM <?php echo $product_price['price']; ?> </td>
+                                            <td>
+                                                <?php
+                                                if ($product_price != null) {
+                                                ?>
+                                                    RM <?php echo $product_price['price']; ?>
+                                                <?php
+                                                } else {
+                                                    echo "<b>Product is either deleted or not exist.</b>";
+                                                }  ?>
+                                            </td>
 
                                             <!--Subtotal-->
                                             <td class="text-right">
-                                                <b>
-                                                    RM <?php echo $row['subtotal']; ?>&nbsp&nbsp
-                                                </b>
+                                                <?php
+                                                $subtotal = $row['subtotal'];
+                                                if ($subtotal != null) {
+                                                ?>
+                                                    <b>
+                                                        RM <?php echo $row['subtotal']; ?>&nbsp&nbsp
+                                                    </b>
+                                                <?php
+                                                } else {
+                                                    echo "<b>Product is either deleted or not exist.</b>";
+                                                }  ?>
+
                                             </td>
 
                                         </tr>
@@ -267,22 +308,22 @@ $quotation = mysqli_fetch_assoc($run_query);
                         $quotationID = $quotation['quotationID'];
 
                         if ($quotation['cancel_status'] == "Not Cancel") {
-                            ?>
-                                <form>
-                                    <input type="hidden" value="<?php $quotationID; ?>" name="id">
-                                    <button type="button" class="btn btn-danger deletebtn btn mt-1" data-toggle="modal" data-target="#deletemodal"><i class="bi bi-file-earmark-excel-fill"></i> Cancel </button>
-                                </form>
-                            <?php
-                            } else {
-                            ?>
-                                <form>
-                                    <input type="hidden" value="<?php $quotationID ?>" name="id">
-                                    <button type="button" class="btn btn-danger deletebtn btn mt-1" disabled><i class="bi bi-file-earmark-excel-fill"></i> Cancel </button>
-                                </form>
-                            <?php
-                            }
-    
-                            ?>
+                        ?>
+                            <form>
+                                <input type="hidden" value="<?php $quotationID; ?>" name="id">
+                                <button type="button" class="btn btn-danger deletebtn btn mt-1" data-toggle="modal" data-target="#deletemodal"><i class="bi bi-file-earmark-excel-fill"></i> Cancel </button>
+                            </form>
+                        <?php
+                        } else {
+                        ?>
+                            <form>
+                                <input type="hidden" value="<?php $quotationID ?>" name="id">
+                                <button type="button" class="btn btn-danger deletebtn btn mt-1" disabled><i class="bi bi-file-earmark-excel-fill"></i> Cancel </button>
+                            </form>
+                        <?php
+                        }
+
+                        ?>
 
                         ?>
                 </div>

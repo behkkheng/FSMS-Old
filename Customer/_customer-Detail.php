@@ -41,15 +41,15 @@
             ?>
         </dl>
 
-        <div class="row">
+        <div class="row float-right">
             <form action="\FSMS\Customer\Customer-Edit.php" method="get">
                 <input type="hidden" value="<?php echo $row['customerID']; ?>" name="id">
-                <button type="submit" class="btn btn-info btn-sm m-1 editbtn"><i class="fas fa-pencil-alt"></i> Edit </button>
+                <button type="submit" class="btn btn-info editbtn float-right m-1"><i class="fas fa-pencil-alt"></i> Edit </button>
             </form>
 
             <form class="">
                 <input type="hidden" value="<?php echo $row['customerID']; ?>" name="id">
-                <button type="button" class="btn btn-danger deletebtn btn-sm m-1"><i class="fas fa-trash"></i> Delete </button>
+                <button type="button" class="btn btn-danger deletebtn float-right m-1 mr-3"><i class="fas fa-trash"></i> Delete </button>
             </form>
         </div>
 
@@ -70,11 +70,11 @@
                 </button>
             </div>
 
-            <form action="other_customer_func.php" method="POST">
+            <<form action="other_customer_func.php" method="POST">
 
                 <div class="modal-body">
 
-                    <input type="hidden" name="delete_id" id="delete_id">
+                    <input type="hidden" name="delete_id" value="<?php echo $id ?>">
 
                     <h5 class="text-center"> Are you sure want to delete?</h5>
                 </div>
@@ -82,7 +82,7 @@
                     <button type="button" class="btn btn-secondary" data-dismiss="modal"> Cancel </button>
                     <button type="submit" name="deletedata" class="btn btn-primary">Yes</button>
                 </div>
-            </form>
+                </form>
 
         </div>
     </div>

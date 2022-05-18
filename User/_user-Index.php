@@ -4,7 +4,7 @@
             <div class="card-header">
                 <div class="row">
                     <div class="col-md-6 offset-md-6">
-                        <a class="btn btn-primary float-right" href="User-Create.php" role="button">New User</a>
+                        <a class="btn btn-primary float-right" href="User-Create.php" role="button"><i class="bi bi-plus-circle-fill"></i> Create New User</a>
                     </div>
                 </div>
             </div>
@@ -22,14 +22,14 @@
             $query = "SELECT * FROM employee";
             $query_run = mysqli_query($connection, $query);
             ?>
-            <table id="datatableid" class="table ml-3">
+            <table id="datatableid" class="table">
                 <thead>
-                    <tr>
+                    <tr class="text-center">
                         <th scope="col"> ID</th>
                         <th scope="col">Name</th>
                         <th scope="col">Username</th>
                         <th scope="col">Role</th>
-                        <th scope="col"> </th>
+                        <th scope="col"></th>
                     </tr>
                 </thead>
                 <?php
@@ -38,16 +38,14 @@
                 ?>
 
                         <tbody>
-                            <tr>
+                            <tr class="text-center">
                                 <td> <?php echo $row['employeeID']; ?> </td>
                                 <td> <?php echo $row['name']; ?> </td>
                                 <td> <?php echo $row['username']; ?> </td>
                                 <td> <?php echo $row['role']; ?> </td>
-                                <td></td>
 
-                                <div class="row">
-                                    <td class="text-right">
-                                        <div class="row">
+                                <td class="" style="width: 20%">
+                                        <div class="row float-right mr-1">
                                             <form action="\FSMS\User\User-Detail.php" method="get">
                                                 <input type="hidden" value="<?php echo $row['employeeID']; ?>" name="id">
                                                 <button type="submit" class="btn btn-primary btn-sm m-1 viewbtn"><i class="fas fa-folder"></i> View </button>
@@ -65,7 +63,7 @@
 
                                         </div>
                                     </td>
-                                </div>
+                                
 
                             </tr>
                         </tbody>

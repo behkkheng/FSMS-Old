@@ -49,7 +49,11 @@
                                         $query_run = mysqli_query($connection, $get_customer_name_query);
                                         $customer_name = mysqli_fetch_array($query_run);
 
-                                        echo $customer_name['name']; ?> </td>
+                                        if ($customer_name != null) {
+                                            echo $customer_name['name'];
+                                        } else {
+                                            echo "<b>Customer is either deleted or not exist.</b>";
+                                        } ?> </td>
 
                                 <td> <?php echo $row['date']; ?> </td>
 
@@ -76,18 +80,18 @@
                                         if ($row['cancel_status'] == "Not Cancel") {
                                         ?>
                                             <form action="\FSMS\Quotation\Quotation-Edit.php" method="get">
-                                            <input type="hidden" value="<?php echo $quotationID; ?>" name="id">
-                                            <button type="submit" class="btn btn-info btn-sm m-1 editbtn"><i class="fas fa-pencil-alt"></i> Edit </button>
-                                        </form><?php
-                                        } else {
-                                            ?>
+                                                <input type="hidden" value="<?php echo $quotationID; ?>" name="id">
+                                                <button type="submit" class="btn btn-info btn-sm m-1 editbtn"><i class="fas fa-pencil-alt"></i> Edit </button>
+                                            </form><?php
+                                                } else {
+                                                    ?>
                                             <form action="\FSMS\Quotation\Quotation-Edit.php" method="get">
-                                            <input type="hidden" value="<?php echo $quotationID; ?>" name="id">
-                                            <button type="submit" class="btn btn-info btn-sm m-1 editbtn" disabled><i class="fas fa-pencil-alt"></i> Edit </button>
-                                        </form><?php
-                                        }
+                                                <input type="hidden" value="<?php echo $quotationID; ?>" name="id">
+                                                <button type="submit" class="btn btn-info btn-sm m-1 editbtn" disabled><i class="fas fa-pencil-alt"></i> Edit </button>
+                                            </form><?php
+                                                }
 
-                                        ?>
+                                                    ?>
 
 
 

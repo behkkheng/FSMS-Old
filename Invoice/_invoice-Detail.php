@@ -53,13 +53,18 @@ $invoice = mysqli_fetch_assoc($run_query);
 
                     $customer_detail = mysqli_fetch_array($run_query);
 
-                    ?>
-                    <address>
-                        <strong><?php echo $customer_detail['name']; ?></strong><br>
-                        <?php echo $customer_detail['address']; ?>,<br />
-                        <?php echo $customer_detail['postcode']; ?>, <?php echo $customer_detail['city']; ?>,<br> <?php echo $customer_detail['state']; ?><br />
-                        Phone: <?php echo $customer_detail['hpNo']; ?><br>
-                    </address>
+                    if ($customer_detail != null) { ?>
+
+                        <address>
+                            <strong><?php echo $customer_detail['name']; ?></strong><br>
+                            <?php echo $customer_detail['address']; ?>,<br />
+                            <?php echo $customer_detail['postcode']; ?>, <?php echo $customer_detail['city']; ?>,<br> <?php echo $customer_detail['state']; ?><br />
+                            Phone: <?php echo $customer_detail['hpNo']; ?><br>
+                        </address>
+                    <?php
+                    } else {
+                        echo "<br><b>Customer is either deleted or not exist.</b>";
+                    }?>
 
                 </div>
 
@@ -144,7 +149,12 @@ $invoice = mysqli_fetch_assoc($run_query);
                                             $run_query = mysqli_query($connection, $get_product_name);
                                             $product_name = mysqli_fetch_array($run_query);
                                             ?>
-                                            <td> <?php echo $product_name["name"]; ?> </td>
+                                            <td> <?php
+                                                    if ($product_name != null) {
+                                                        echo $product_name["name"];
+                                                    } else {
+                                                        echo "<b>Product is either deleted or not exist.</b>";
+                                                    }  ?> </td>
 
                                             <!--quantity-->
                                             <td> <?php echo $row['quantity']; ?> </td>
@@ -155,7 +165,14 @@ $invoice = mysqli_fetch_assoc($run_query);
                                             $run_query = mysqli_query($connection, $get_product_price);
                                             $product_price = mysqli_fetch_array($run_query);
                                             ?>
-                                            <td>RM <?php echo $product_price['price']; ?> </td>
+                                            <td><?php
+                                                if ($product_price != null) {
+                                                ?>
+                                                    RM <?php echo $product_price['price']; ?>
+                                                <?php
+                                                } else {
+                                                    echo "<b>Product is either deleted or not exist.</b>";
+                                                }  ?></td>
 
                                             <!--Subtotal-->
                                             <td class="text-right">

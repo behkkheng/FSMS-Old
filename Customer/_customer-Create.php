@@ -56,7 +56,7 @@ $connection = new mysqli("localhost", "root", "", "fsms");
                                 <input type="text" class="form-control" id="inputPostcode" name="postcode">
                             </div>
                         </div>
-                        <button type="submit" class="btn btn-primary" name="createCustomer">Create</button>
+                        <button type="submit" class="btn btn-primary float-right" name="createCustomer"><i class="bi bi-person-plus-fill"></i> Create</button>
                     </form>
                 </div>
             </div>
@@ -99,7 +99,7 @@ if(isset($_POST['createCustomer'])){
     $city = $_POST['city'];
     $state = $_POST['state'];
 
-    $create_customer_query = "INSERT INTO `customer` (`name`, `hpNo`, `address`, `city`, `state`, `postcode`) VALUES ('$name', '$hpNo', '$address', '$postcode', '$state', '$postcode')";
+    $create_customer_query = "INSERT INTO `customer` (`name`, `hpNo`, `address`, `city`, `state`, `postcode`) VALUES ('$name', '$hpNo', '$address', '$city', '$state', '$postcode')";
     $run_query = mysqli_query($connection, $create_customer_query);
     if ($run_query) {
         echo("<script>location.href = 'Customer-Index.php';</script>");

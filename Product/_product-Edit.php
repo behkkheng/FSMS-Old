@@ -45,7 +45,7 @@
                                     <label for="price">Price</label>
                                     <div class="input-group-prepend">
                                         <span class="input-group-text">RM</span>
-                                        <input type="text" class="form-control" id="price" name="price" value="<?= $product["price"]; ?>" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default">
+                                        <input type="text" class="form-control" id="price" name="price" value="<?= $product["price"]; ?>" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default" required>
                                     </div>
                                     <div class="invalid-feedback">Price is required.</div>
                                 </div>
@@ -76,7 +76,7 @@
 
                                 <input type="hidden" value="<?= $product["productID"]; ?>" name="id">
 
-                                <button type="submit" class="btn btn-primary" name="update">Edit</button>
+                                <button type="submit" class="btn btn-primary float-right" name="update"><i class="fas fa-pencil-alt"></i> Edit</button>
                             </form>
                     <?php
                         } else {

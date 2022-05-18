@@ -96,7 +96,7 @@
                                     </div>
                                 </div>
                                 <input type="hidden" name="employee_id" value="<?= $employee['employeeID']; ?>">
-                                <button type="submit" class="btn btn-primary" name="update">Save</button>
+                                <button type="submit" class="btn btn-success float-right" name="update"><i class="fas fa-save"></i> Save</button>
                             </form>
                     <?php
                         } else {

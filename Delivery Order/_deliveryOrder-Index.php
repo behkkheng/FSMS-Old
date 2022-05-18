@@ -49,7 +49,13 @@
                                         $query_run = mysqli_query($connection, $get_customer_name_query);
                                         $customer_name = mysqli_fetch_array($query_run);
 
-                                        echo $customer_name['name']; ?> </td>
+                                        if($customer_name != null){
+                                            echo $customer_name['name'];
+                                        }else{
+                                            echo "<b>Customer is either deleted or not exist.</b>";
+                                        }
+
+                                         ?> </td>
 
                                 <td> <?php echo $row['date']; ?> </td>
 
