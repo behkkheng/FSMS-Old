@@ -64,7 +64,7 @@ $invoice = mysqli_fetch_assoc($run_query);
                     <?php
                     } else {
                         echo "<br><b>Customer is either deleted or not exist.</b>";
-                    }?>
+                    } ?>
 
                 </div>
 
@@ -83,6 +83,21 @@ $invoice = mysqli_fetch_assoc($run_query);
                             <?php
                             $date = $invoice['date'];
                             echo $date;
+                            ?>
+                        </div>
+                    </div>
+
+                    <br>
+
+                    <!--PO No-->
+                    <div class="row col-sm-12">
+                        <div class="col-sm-6">
+                            <b>Purchase Order No.: </b>
+                        </div>
+                        <div class="col-sm-6">
+                            <?php
+                            $poNo = $invoice['poNo'];
+                            echo $poNo;
                             ?>
                         </div>
                     </div>
@@ -284,22 +299,22 @@ $invoice = mysqli_fetch_assoc($run_query);
                         $invoiceID = $invoice['invoiceID'];
 
                         if ($invoice['cancel_status'] == "Not Cancel") {
-                            ?>
-                                <form>
-                                    <input type="hidden" value="<?php $invoiceID; ?>" name="id">
-                                    <button type="button" class="btn btn-danger deletebtn btn mt-1" data-toggle="modal" data-target="#deletemodal"><i class="bi bi-file-earmark-excel-fill"></i> Cancel </button>
-                                </form>
-                            <?php
-                            } else {
-                            ?>
-                                <form>
-                                    <input type="hidden" value="<?php $invoiceID ?>" name="id">
-                                    <button type="button" class="btn btn-danger deletebtn btn mt-1" disabled><i class="bi bi-file-earmark-excel-fill"></i> Cancel </button>
-                                </form>
-                            <?php
-                            }
-    
-                            ?>
+                        ?>
+                            <form>
+                                <input type="hidden" value="<?php $invoiceID; ?>" name="id">
+                                <button type="button" class="btn btn-danger deletebtn btn mt-1" data-toggle="modal" data-target="#deletemodal"><i class="bi bi-file-earmark-excel-fill"></i> Cancel </button>
+                            </form>
+                        <?php
+                        } else {
+                        ?>
+                            <form>
+                                <input type="hidden" value="<?php $invoiceID ?>" name="id">
+                                <button type="button" class="btn btn-danger deletebtn btn mt-1" disabled><i class="bi bi-file-earmark-excel-fill"></i> Cancel </button>
+                            </form>
+                        <?php
+                        }
+
+                        ?>
                 </div>
 
 

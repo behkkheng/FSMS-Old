@@ -10,26 +10,6 @@ if (!$con = mysqli_connect($dbhost, $dbuser, $dbpassword, $dbname)) {
     die("Failed to connect the database.");
 }
 
-function check_login($con)
-{
-
-    if (isset($_SESSION['user_id'])) {
-        $id = $_SESSION['user_id'];
-        $query = "SELECT * FROM employee WHERE employeeID = '$id' limit 1";
-
-        $result = mysqli_query($con, $query);
-        if ($result && mysqli_num_rows($result) > 0) {
-            $user_data = mysqli_fetch_assoc($result);
-
-            return $user_data;
-        }
-    }
-
-    //redirect to login
-    header("Location: login.php");
-    die;
-}
-
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     //Something was posted
     $username_enter = $_POST['username'];
@@ -41,9 +21,11 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $result = mysqli_query($con, $query);
 
         if ($result) {
+            //if username is found
             if ($result && mysqli_num_rows($result) > 0) {
                 $user_data = mysqli_fetch_assoc($result);
 
+                //if password match
                 if ($user_data['password'] === $password_enter) {
                     $_SESSION['employeeID'] = $user_data['employeeID'];
                     $_SESSION['name'] = $user_data['name'];
@@ -60,8 +42,16 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                     header("Location: Dashboard/Dashboard.php");
                     die;
                 } else {
-                    echo '<script>alert("Invalid password or username.")</script>';
+                    echo "<script language='javascript'>";
+                    echo 'alert("Invalid password or username.");';
+                    echo "</script>";
+                    header("Refresh:0");
                 }
+            } else{
+                echo "<script language='javascript'>";
+                    echo 'alert("Invalid password or username.");';
+                    echo "</script>";
+                    header("Refresh:0");
             }
         }
     }

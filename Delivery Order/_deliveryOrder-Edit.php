@@ -136,7 +136,21 @@ if ($_SESSION['run_one_time'] == 1) {
 
                         </div>
 
-                        <br>
+                        <div class="form-group">
+
+                            <div class="form-group row col-sm-12">
+                                <label for="poNo" class="col-md-6 col-form-label">Purchased Order No.: </label>
+
+                                <div class="col-sm-6">
+
+                                <?php $poNo = $deliveryOrder['poNo'] ?>
+
+                                    <input type="text" class="form-control form-control-sm mol-md-6" id="poNo" name="poNo" value="<?php echo $poNo; ?>">
+                                    
+                                </div>
+                            </div>
+                            
+                        </div>
 
                         <!--Cancel status-->
                         <div class="row col-sm-12">
@@ -636,8 +650,9 @@ if (isset($_POST['editDeliveryOrder'])) {
     $customerID = $_SESSION['deliveryOrder_customerID'];
     $total_amount = $_POST['total_amount'];
     $cancel_status = "Not Cancel";
+    $poNo = $_POST['poNo'];
 
-    $edit_deliveryOrder_query = "UPDATE `deliveryOrder` SET `date` = '$date', `customerID` = '$customerID', `product_quantity` = '$product_quantity' WHERE `deliveryOrderID` = '$deliveryOrderID'";;
+    $edit_deliveryOrder_query = "UPDATE `deliveryOrder` SET `date` = '$date', `customerID` = '$customerID', `product_quantity` = '$product_quantity' , `poNo` = '$poNo' WHERE `deliveryOrderID` = '$deliveryOrderID'";;
     $run_query = mysqli_query($connection, $edit_deliveryOrder_query);
 
     if ($run_query) {

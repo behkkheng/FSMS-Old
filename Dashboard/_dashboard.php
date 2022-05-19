@@ -16,7 +16,12 @@ $connection = mysqli_connect("localhost", "root", "", "fsms");
                     $quantity = $product_quantity['SUM(quantity)'];
 
                     ?>
-                    <h3><?php echo $quantity; ?></h3>
+                    <h3><?php
+                        if ($quantity == null) {
+                            echo "0";
+                        } else {
+                            echo $quantity;
+                        }  ?></h3>
 
                     <p>Stocks in warehouse</p>
                 </div>
@@ -91,9 +96,9 @@ $connection = mysqli_connect("localhost", "root", "", "fsms");
 
 
 <div class="card">
-<div class="card-header">
-    <h4 class="mt-1">Featured Furniture Today</h4>
-  </div>
+    <div class="card-header">
+        <h4 class="mt-1">Featured Furniture Today</h4>
+    </div>
     <div class="card-body">
         <div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel">
             <ol class="carousel-indicators">

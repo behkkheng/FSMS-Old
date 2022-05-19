@@ -136,7 +136,21 @@ if ($_SESSION['run_one_time'] == 1) {
 
                         </div>
 
-                        <br>
+                        <div class="form-group">
+
+                            <div class="form-group row col-sm-12">
+                                <label for="poNo" class="col-md-6 col-form-label">Purchased Order No.: </label>
+
+                                <div class="col-sm-6">
+
+                                <?php $poNo = $invoice['poNo'] ?>
+
+                                    <input type="text" class="form-control form-control-sm mol-md-6" id="poNo" name="poNo" value="<?php echo $poNo; ?>">
+                                    
+                                </div>
+                            </div>
+                            
+                        </div>
 
                         <!--Cancel status-->
                         <div class="row col-sm-12">
@@ -659,8 +673,9 @@ if (isset($_POST['editInvoice'])) {
     $customerID = $_SESSION['invoice_customerID'];
     $total_amount = $_POST['total_amount'];
     $cancel_status = "Not Cancel";
+    $poNo = $_POST['poNo'];
 
-    $edit_invoice_query = "UPDATE `invoice` SET `date` = '$date', `customerID` = '$customerID', `total_amount` = '$total_amount' WHERE `invoiceID` = '$invoiceID'";;
+    $edit_invoice_query = "UPDATE `invoice` SET `date` = '$date', `customerID` = '$customerID', `total_amount` = '$total_amount', `poNo` = '$poNo' WHERE `invoiceID` = '$invoiceID'";;
     $run_query = mysqli_query($connection, $edit_invoice_query);
 
     if ($run_query) {

@@ -106,6 +106,18 @@ $quotation = mysqli_fetch_assoc($run_query);
                             ?>
                         </div>
                     </div>
+
+                    <br>
+
+                    <div class="row col-sm-12">
+                        <div class="col-sm-6">
+                            <b>Date Validity: </b>
+                        </div>
+                        <div class="col-sm-6">
+                            1 Month
+                        </div>
+                    </div>
+
                     <!-- /.col -->
                 </div>
             </div>
@@ -120,6 +132,7 @@ $quotation = mysqli_fetch_assoc($run_query);
                                 <th>No.</th>
                                 <th>Product ID</th>
                                 <th>Product</th>
+                                <th>Image</th>
                                 <th>Qty.</th>
                                 <th>Unit Price</th>
                                 <th class="text-right">Subtotal&nbsp&nbsp&nbsp&nbsp</th>
@@ -167,6 +180,25 @@ $quotation = mysqli_fetch_assoc($run_query);
                                                     } else {
                                                         echo "<b>Product is either deleted or not exist.</b>";
                                                     }  ?>
+                                            </td>
+
+                                            <!--image-->
+                                            <?php
+
+                                            $get_product_image = "SELECT productPath FROM product WHERE productID = '$productID'";
+                                            $run_query = mysqli_query($connection, $get_product_image);
+                                            $product_image = mysqli_fetch_array($run_query);
+                                            ?>
+                                            <td height="10%" width="10%">
+                                                <?php
+                                                if ($product_image != null) { ?>
+                                                    
+                                                <img class="img-fluid" style="" src="<?php echo $product_image["productPath"]; ?>">
+                                                
+                                                <?php
+                                                } else {
+                                                    echo "<b>Product is either deleted or not exist.</b>";
+                                                }  ?>
                                             </td>
 
                                             <!--quantity-->

@@ -123,7 +123,20 @@ if (isset($deliveryOrder)) {
 
                         </div>
 
-                        <br>
+                        <!--PO No-->
+                        <div class="form-group">
+
+                            <div class="form-group row col-sm-12">
+                                <label for="poNo" class="col-md-6 col-form-label">Purchased Order No.: </label>
+
+                                <div class="col-sm-6">
+
+                                    <input type="text" class="form-control form-control-sm mol-md-6" id="poNo" name="poNo">
+                                    
+                                </div>
+                            </div>
+                            
+                        </div>
 
                         <!--Cancel status-->
                         <div class="row col-sm-12">
@@ -591,12 +604,13 @@ if (isset($_POST['createDeliveryOrder'])) {
     $date = $_POST['date'];
     $customerID = $_SESSION['deliveryOrder_customerID'];
     $cancel_status = "Not Cancel";
+    $poNo = $_POST['poNo'];
 
-    $create_deliveryOrder_query = "INSERT INTO `deliveryOrder` (`date`, `customerID`, `product_quantity`, `cancel_status`) VALUES ('$date', '$customerID', '$product_quantity', '$cancel_status')";
+    $create_deliveryOrder_query = "INSERT INTO `deliveryOrder` (`date`, `customerID`, `product_quantity`, `cancel_status`, `poNo`) VALUES ('$date', '$customerID', '$product_quantity', '$cancel_status', '$poNo')";
     $run_query = mysqli_query($connection, $create_deliveryOrder_query);
 
     if ($run_query) {
-        $_SESSION['deliveryOrder_customerID'] = "";                                   
+        $_SESSION['deliveryOrder_customerID'] = "";
         echo ("<script>location.href = 'DeliveryOrder-Index.php';</script>");
         exit();
     } else {

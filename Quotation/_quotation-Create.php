@@ -123,8 +123,6 @@ if (isset($quotation)) {
 
                         </div>
 
-                        <br>
-
                         <!--Cancel status-->
                         <div class="row col-sm-12">
                             <div class="col-sm-6">
@@ -135,6 +133,16 @@ if (isset($quotation)) {
                             </div>
                         </div>
 
+                        <br>
+
+                        <div class="row col-sm-12">
+                            <div class="col-sm-6">
+                                <b>Date Validity: </b>
+                            </div>
+                            <div class="col-sm-6">
+                                1 Month
+                            </div>
+                        </div>
 
                     </div>
                     <!-- /.col -->

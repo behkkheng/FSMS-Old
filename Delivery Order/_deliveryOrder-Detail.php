@@ -91,6 +91,21 @@ $deliveryOrder = mysqli_fetch_assoc($run_query);
 
                     <br>
 
+                    <!--PO No-->
+                    <div class="row col-sm-12">
+                        <div class="col-sm-6">
+                            <b>Purchase Order No.: </b>
+                        </div>
+                        <div class="col-sm-6">
+                            <?php
+                            $poNo = $deliveryOrder['poNo'];
+                            echo $poNo;
+                            ?>
+                        </div>
+                    </div>
+
+                    <br>
+
                     <!--Cancel status-->
                     <div class="row col-md-12">
                         <div class="col-md-6">

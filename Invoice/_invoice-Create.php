@@ -118,12 +118,24 @@ if (isset($invoice)) {
                                     <input type="text" class="form-control form-control-sm mol-md-6" id="datepicker" value="<?php echo $today_date; ?>" name="date" required>
                                     <div class="invalid-feedback">Date is required.</div>
                                 </div>
-
                             </div>
 
                         </div>
 
-                        <br>
+                        <!--PO No-->
+                        <div class="form-group">
+
+                            <div class="form-group row col-sm-12">
+                                <label for="poNo" class="col-md-6 col-form-label">Purchased Order No.: </label>
+
+                                <div class="col-sm-6">
+
+                                    <input type="text" class="form-control form-control-sm mol-md-6" id="poNo" name="poNo">
+                                    
+                                </div>
+                            </div>
+                            
+                        </div>
 
                         <!--Cancel status-->
                         <div class="row col-sm-12">
@@ -613,9 +625,10 @@ if (isset($_POST['createInvoice'])) {
     $date = $_POST['date'];
     $customerID = $_SESSION['invoice_customerID'];
     $total_amount = $_POST['total_amount'];
+    $poNo = $_POST['poNo'];
     $cancel_status = "Not Cancel";
 
-    $create_invoice_query = "INSERT INTO `invoice` (`date`, `customerID`, `total_amount`, `cancel_status`) VALUES ('$date', '$customerID', '$total_amount', '$cancel_status')";
+    $create_invoice_query = "INSERT INTO `invoice` (`date`, `customerID`, `total_amount`, `cancel_status`, `poNo`) VALUES ('$date', '$customerID', '$total_amount', '$cancel_status','$poNo')";
     $run_query = mysqli_query($connection, $create_invoice_query);
 
     if ($run_query) {
