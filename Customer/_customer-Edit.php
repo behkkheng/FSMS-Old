@@ -32,46 +32,20 @@
                                     </div>
                                 </div>
                                 <div class="form-row">
-                                    <div class="form-group col-md-12">
+                                    <div class="form-group col-md-6">
                                         <label for="hpNo">H/P No</label>
                                         <input type="text" class="form-control" id="hpNo" value="<?= $customer["hpNo"]; ?>" name="hpNo">
+                                    </div>
+                                    <div class="form-group col-md-6">
+                                        <label for="email">Email</label>
+                                        <input type="email" class="form-control" id="email" value="<?= $customer["email"]; ?>" name="email">
                                     </div>
                                 </div>
                                 <div class="form-group">
                                     <label for="inputAddress">Address</label>
                                     <textarea class="form-control" id="inputAddress" rows="3" name="address"><?= $customer["address"]; ?></textarea>
                                 </div>
-                                <div class="form-row">
-                                    <div class="form-group col-md-4">
-                                        <label for="inputCity">City</label>
-                                        <input type="text" class="form-control" id="inputCity" value="<?= $customer["city"]; ?>" name="city">
-                                    </div>
-                                    <div class="form-group col-md-4">
-                                        <label for="inputState">State</label>
-                                        <select id="inputState" class="custom-select" value="<?= $customer["state"]; ?>" name="state">
-                                        <option selected value="">Choose...</option>
-                                            <option value="Kedah" <?php if ($customer["state"] == 'Kedah') echo ' selected="selected"'; ?>>Kedah</option>
-                                            <option value="Penang" <?php if ($customer["state"] == 'Penang') echo ' selected="selected"'; ?>>Penang</option>
-                                            <option value="Kelantan" <?php if ($customer["state"] == 'Kelantan') echo ' selected="selected"'; ?>>Kelantan</option>
-                                            <option value="Perak" <?php if ($customer["state"] == 'Perak') echo ' selected="selected"'; ?>>Perak</option>
-                                            <option value="Pahang" <?php if ($customer["state"] == 'Pahang') echo ' selected="selected"'; ?>>Pahang</option>
-                                            <option value="Melaka" <?php if ($customer["state"] == 'Melaka') echo ' selected="selected"'; ?>>Melaka</option>
-                                            <option value="Selangor" <?php if ($customer["state"] == 'Selangor') echo ' selected="selected"'; ?>>Selangor</option>
-                                            <option value="Terengganu" <?php if ($customer["state"] == 'Terengganu') echo ' selected="selected"'; ?>>Terengganu</option>
-                                            <option value="Johor" <?php if ($customer["state"] == 'Johor') echo ' selected="selected"'; ?>>Johor</option>
-                                            <option value="Perlis" <?php if ($customer["state"] == 'Perlis') echo ' selected="selected"'; ?>>Perlis</option>
-                                            <option value="Sarawak" <?php if ($customer["state"] == 'Sarawak') echo ' selected="selected"'; ?>>Sarawak</option>
-                                            <option value="Sabah" <?php if ($customer["state"] == 'Sabah') echo ' selected="selected"'; ?>>Sabah</option>
-                                            <option value="Kuala Lumpur" <?php if ($customer["state"] == 'Kuala Lumpur') echo ' selected="selected"'; ?>>Kuala Lumpur</option>
-                                            <option value="Putrajaya" <?php if ($customer["state"] == 'Putrajaya') echo ' selected="selected"'; ?>>Putrajaya</option>
-                                            <option value="Labuan" <?php if ($customer["state"] == 'Labuan') echo ' selected="selected"'; ?>>Labuan</option>
-                                        </select>
-                                    </div>
-                                    <div class="form-group col-md-4">
-                                        <label for="inputPostcode">Postcode</label>
-                                        <input type="text" class="form-control" id="inputPostcode" value="<?= $customer["postcode"]; ?>" name="postcode">
-                                    </div>
-                                </div>
+                                
                                 <input type="hidden" name="customer_id" value="<?= $customer['customerID']; ?>">
                                 <button type="submit" class="btn btn-success float-right" name="update"><i class="fas fa-save"></i> Save</button>
                             </form>

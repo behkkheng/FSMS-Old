@@ -1,5 +1,3 @@
-
-
 <?php
 $servername = "localhost";
 $username = "root";
@@ -16,7 +14,7 @@ $target_file = $target_dir . date("Ymdhisa", $t) .  basename($_FILES["image"]["n
 $uploadOk = 1;
 $imageFileType = strtolower(pathinfo($target_file, PATHINFO_EXTENSION));
 
-if (isset($_POST["submit"]) && isset($_POST['image'])){
+if (isset($_POST["submit"]) && isset($_FILES['image'])){
 // Check if image file is a actual image or fake image
 if (isset($_POST["submit"])) {
     $check = getimagesize($_FILES["image"]["tmp_name"]);
@@ -60,7 +58,7 @@ if ($uploadOk == 0) {
     $quantity = $_POST['quantity'];
     $desc = $_POST['desc'];
 
-    $sql = "INSERT INTO `product` (`name`, `price`, `quantity`, `description`, `productPath`) VALUES ('$name', '$price', '$quantity', '$desc', '$target_file')";
+    $sql = "INSERT INTO `product` (`name`, `price`, `quantity`, `description`, `product_image`) VALUES ('$name', '$price', '$quantity', '$desc', '$target_file')";
     $result = mysqli_query($conn, $sql);
 
     if ($result && move_uploaded_file($_FILES["image"]["tmp_name"], $target_file)) {
@@ -81,6 +79,3 @@ if ($uploadOk == 0) {
     $result = mysqli_query($conn, $sql);
     header("Location: Product-Index.php");
 }
-
-?>
- 

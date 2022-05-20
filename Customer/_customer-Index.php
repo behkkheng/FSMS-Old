@@ -27,8 +27,8 @@
                     <tr class="text-center">
                         <th scope="col"> ID</th>
                         <th scope="col">Name</th>
-                        <th scope="col">hpNo</th>
-                        <th scope="col">City</th>
+                        <th scope="col">H/p No.</th>
+                        <th scope="col">Email</th>
                         <th scope="col"> </th>
                     </tr>
                 </thead>
@@ -42,7 +42,7 @@
                                 <td> <?php echo $row['customerID']; ?> </td>
                                 <td> <?php echo $row['name']; ?> </td>
                                 <td> <?php echo $row['hpNo']; ?> </td>
-                                <td> <?php echo $row['city']; ?> </td>
+                                <td> <?php echo $row['email']; ?> </td>
                                 <td></td>
 
 

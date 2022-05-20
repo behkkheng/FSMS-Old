@@ -9,13 +9,12 @@ $con = new mysqli($servername, $username, $password, $dbname);
 
 if (isset($_POST['deletedata'])) {
     $product_id = mysqli_real_escape_string($con, $_POST['delete_id']);
-    echo $product_id;
-    echo "hoho";
     $query = "DELETE FROM product WHERE productID='$product_id' ";
     $query_run = mysqli_query($con, $query);
 
     if ($query_run) {
         echo "Employee Deleted Successfully";
+        echo $_POST['delete_id'];
 
         header("Location: Product-Index.php");
 
@@ -87,7 +86,7 @@ if (isset($_POST['update'])) {
             $desc = $_POST['desc'];
             $id = $_POST['id'];
 
-            $sql = "UPDATE `product` SET `name` = '$name', `price` = '$price', `quantity` = '$quantity', `description` = '$desc', `productPath` = '$target_file' WHERE `product`.`productID` = $id";
+            $sql = "UPDATE `product` SET `name` = '$name', `price` = '$price', `quantity` = '$quantity', `description` = '$desc', `product_image` = '$target_file' WHERE `product`.`productID` = $id";
 
             //$sql = "UPDATE product SET name='$name', price='$price', quantity='$quantity', description='$desc', productPath='$target_file' WHERE productID='$id";
             $result = mysqli_query($conn, $sql);

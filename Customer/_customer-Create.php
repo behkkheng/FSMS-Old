@@ -16,52 +16,27 @@ $connection = new mysqli("localhost", "root", "", "fsms");
                             </div>
                         </div>
                         <div class="form-row">
-                            <div class="form-group col-md-12">
+                            <div class="form-group col-md-6">
                                 <label for="hpNo">H/P No</label>
                                 <input type="text" class="form-control" id="hpNo" name="hpNo">
+                            </div>
+                            <div class="form-group col-md-6">
+                                <label for="hpNo">Email</label>
+                                <input type="email" class="form-control" id="email" name="email">
                             </div>
                         </div>
                         <div class="form-group">
                             <label for="inputAddress">Address</label>
                             <textarea class="form-control" id="inputAddress" rows="3" name="address"></textarea>
                         </div>
-                        <div class="form-row">
-                            <div class="form-group col-md-4">
-                                <label for="inputCity">City</label>
-                                <input type="text" class="form-control" id="inputCity" name="city">
-                            </div>
-                            <div class="form-group col-md-4">
-                                <label for="inputState">State</label>
-                                <select id="inputState" class="custom-select" name="state">
-                                    <option selected value="">Choose...</option>
-                                    <option value="Kedah">Kedah</option>
-                                    <option value="Penang">Penang</option>
-                                    <option value="Kelantan">Kelantan</option>
-                                    <option value="Perak">Perak</option>
-                                    <option value="Pahang">Pahang</option>
-                                    <option value="Melaka">Melaka</option>
-                                    <option value="Selangor">Selangor</option>
-                                    <option value="Terengganu">Terengganu</option>
-                                    <option value="Johor">Johor</option>
-                                    <option value="Perlis">Perlis</option>
-                                    <option value="Sarawak">Sarawak</option>
-                                    <option value="Sabah">Sabah</option>
-                                    <option value="Kuala Lumpur">Kuala Lumpur</option>
-                                    <option value="Putrajaya">Putrajaya</option>
-                                    <option value="Labuan">Labuan</option>
-                                </select>
-                            </div>
-                            <div class="form-group col-md-4">
-                                <label for="inputPostcode">Postcode</label>
-                                <input type="text" class="form-control" id="inputPostcode" name="postcode">
-                            </div>
-                        </div>
-                        <button type="submit" class="btn btn-primary float-right" name="createCustomer"><i class="bi bi-person-plus-fill"></i> Create</button>
-                    </form>
+
                 </div>
+                <button type="submit" class="btn btn-primary float-right" name="createCustomer"><i class="bi bi-person-plus-fill"></i> Create</button>
+                </form>
             </div>
         </div>
     </div>
+</div>
 </div>
 </div>
 </div>
@@ -91,18 +66,16 @@ $connection = new mysqli("localhost", "root", "", "fsms");
 <!-- /.content -->
 
 <?php
-if(isset($_POST['createCustomer'])){
+if (isset($_POST['createCustomer'])) {
     $name = $_POST['name'];
     $hpNo = $_POST['hpNo'];
     $address = $_POST['address'];
-    $postcode = $_POST['postcode'];
-    $city = $_POST['city'];
-    $state = $_POST['state'];
+    $email = $_POST['email'];
 
-    $create_customer_query = "INSERT INTO `customer` (`name`, `hpNo`, `address`, `city`, `state`, `postcode`) VALUES ('$name', '$hpNo', '$address', '$city', '$state', '$postcode')";
+    $create_customer_query = "INSERT INTO `customer` (`name`, `hpNo`, `address`, `email`) VALUES ('$name', '$hpNo', '$address', '$email')";
     $run_query = mysqli_query($connection, $create_customer_query);
     if ($run_query) {
-        echo("<script>location.href = 'Customer-Index.php';</script>");
+        echo ("<script>location.href = 'Customer-Index.php';</script>");
         exit;
     } else {
         echo "Error when create new customer";

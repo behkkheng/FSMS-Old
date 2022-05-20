@@ -38,12 +38,10 @@ if(isset($_POST['update']))
     $username = mysqli_real_escape_string($con, $_POST['username']);
     $password = mysqli_real_escape_string($con, $_POST['password']);
     $address = mysqli_real_escape_string($con, $_POST['address']);
-    $city = mysqli_real_escape_string($con, $_POST['city']);
-    $state = mysqli_real_escape_string($con, $_POST['state']);
-    $postcode = mysqli_real_escape_string($con, $_POST['postcode']);
     $role = mysqli_real_escape_string($con, $_POST['role']);
+    $email = mysqli_real_escape_string($con, $_POST['email']);
 
-    $query = "UPDATE employee SET name='$name', hpNo='$hpNo', username='$username', password='$password', address='$address', city='$city', state='$state', postcode='$postcode', role='$role' WHERE employeeID='$employee_id' ";
+    $query = "UPDATE employee SET name='$name', hpNo='$hpNo', username='$username', password='$password', address='$address', email = '$email', role='$role' WHERE employeeID='$employee_id' ";
     $query_run = mysqli_query($con, $query);
 
     if($query_run)

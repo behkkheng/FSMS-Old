@@ -26,16 +26,12 @@
                     <dd class="col-sm-8">' . $row["name"] . '</dd>
                     <dt class="col-sm-4">Username: </dt>
                     <dd class="col-sm-8">' . $row["username"] . '</dd>
+                    <dt class="col-sm-4">Email: </dt>
+                    <dd class="col-sm-8">' . $row["email"] . '</dd>
                     <dt class="col-sm-4">Handphone Number: </dt>
                     <dd class="col-sm-8">' . $row["hpNo"] . '</dd>
                     <dt class="col-sm-4">Address: </dt>
                     <dd class="col-sm-8">' . $row["address"] . '</dd>
-                    <dt class="col-sm-4">City: </dt>
-                    <dd class="col-sm-8">' . $row["city"] . '</dd>
-                    <dt class="col-sm-4">State: </dt>
-                    <dd class="col-sm-8">' . $row["state"] . '</dd>
-                    <dt class="col-sm-4">Postcode: </dt>
-                    <dd class="col-sm-8">' . $row["postcode"] . '</dd>
                     <dt class="col-sm-4">Role: </dt>
                     <dd class="col-sm-8">' . $row["role"] . '</dd>';
             } else {

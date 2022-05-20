@@ -28,12 +28,8 @@
                     <dd class="col-sm-10">' . $row["hpNo"] . '</dd>
                     <dt class="col-sm-2">Address: </dt>
                     <dd class="col-sm-10">' . $row["address"] . '</dd>
-                    <dt class="col-sm-2">City: </dt>
-                    <dd class="col-sm-10">' . $row["city"] . '</dd>
-                    <dt class="col-sm-2">State: </dt>
-                    <dd class="col-sm-10">' . $row["state"] . '</dd>
-                    <dt class="col-sm-2">Postcode: </dt>
-                    <dd class="col-sm-10">' . $row["postcode"] . '</dd>';
+                    <dt class="col-sm-2">Email: </dt>
+                    <dd class="col-sm-10">' . $row["email"] . '</dd>';
             } else {
                 echo "0 results";
             }

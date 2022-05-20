@@ -29,11 +29,9 @@ if(isset($_POST['update']))
     $name = mysqli_real_escape_string($con, $_POST['name']);
     $hpNo = mysqli_real_escape_string($con, $_POST['hpNo']);
     $address = mysqli_real_escape_string($con, $_POST['address']);
-    $city = mysqli_real_escape_string($con, $_POST['city']);
-    $state = mysqli_real_escape_string($con, $_POST['state']);
-    $postcode = mysqli_real_escape_string($con, $_POST['postcode']);
+    $email = mysqli_real_escape_string($con, $_POST['email']);
 
-    $query = "UPDATE customer SET name='$name', hpNo='$hpNo', address='$address', city='$city', state='$state', postcode='$postcode' WHERE customerID='$customer_id' ";
+    $query = "UPDATE customer SET name='$name', hpNo='$hpNo', address='$address', email='$email' WHERE customerID='$customer_id' ";
     $query_run = mysqli_query($con, $query);
 
     if($query_run)

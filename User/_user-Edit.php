@@ -31,12 +31,18 @@
                                         <div class="invalid-feedback">Name field is required.</div>
                                     </div>
                                 </div>
+
                                 <div class="form-row">
-                                    <div class="form-group col-md-12">
+                                    <div class="form-group col-md-6">
                                         <label for="hpNo">H/P No</label>
                                         <input type="text" class="form-control" id="hpNo" value="<?= $employee["hpNo"]; ?>" name="hpNo">
                                     </div>
+                                    <div class="form-group col-md-6">
+                                        <label for="email">Email</label>
+                                        <input type="email" class="form-control" id="email" value="<?= $employee["email"]; ?>" name="email" aria-describedby="emailHelp">
+                                    </div>
                                 </div>
+
                                 <div class="form-row">
                                     <div class="form-group col-md-6">
                                         <label for="username">Username</label>
@@ -55,37 +61,6 @@
                                 </div>
                                 <div class="form-row">
                                     <div class="form-group col-md-4">
-                                        <label for="inputCity">City</label>
-                                        <input type="text" class="form-control" id="inputCity" value="<?= $employee["city"]; ?>" name="city">
-                                    </div>
-                                    <div class="form-group col-md-4">
-                                        <label for="inputState">State</label>
-                                        <select id="inputState" class="custom-select" value="<?= $employee["state"]; ?>" name="state">
-                                            <option selected value="">Choose...</option>
-                                            <option value="Kedah" <?php if ($employee["state"] == 'Kedah') echo ' selected="selected"'; ?>>Kedah</option>
-                                            <option value="Penang" <?php if ($employee["state"] == 'Penang') echo ' selected="selected"'; ?>>Penang</option>
-                                            <option value="Kelantan" <?php if ($employee["state"] == 'Kelantan') echo ' selected="selected"'; ?>>Kelantan</option>
-                                            <option value="Perak" <?php if ($employee["state"] == 'Perak') echo ' selected="selected"'; ?>>Perak</option>
-                                            <option value="Pahang" <?php if ($employee["state"] == 'Pahang') echo ' selected="selected"'; ?>>Pahang</option>
-                                            <option value="Melaka" <?php if ($employee["state"] == 'Melaka') echo ' selected="selected"'; ?>>Melaka</option>
-                                            <option value="Selangor" <?php if ($employee["state"] == 'Selangor') echo ' selected="selected"'; ?>>Selangor</option>
-                                            <option value="Terengganu" <?php if ($employee["state"] == 'Terengganu') echo ' selected="selected"'; ?>>Terengganu</option>
-                                            <option value="Johor" <?php if ($employee["state"] == 'Johor') echo ' selected="selected"'; ?>>Johor</option>
-                                            <option value="Perlis" <?php if ($employee["state"] == 'Perlis') echo ' selected="selected"'; ?>>Perlis</option>
-                                            <option value="Sarawak" <?php if ($employee["state"] == 'Sarawak') echo ' selected="selected"'; ?>>Sarawak</option>
-                                            <option value="Sabah" <?php if ($employee["state"] == 'Sabah') echo ' selected="selected"'; ?>>Sabah</option>
-                                            <option value="Kuala Lumpur" <?php if ($employee["state"] == 'Kuala Lumpur') echo ' selected="selected"'; ?>>Kuala Lumpur</option>
-                                            <option value="Putrajaya" <?php if ($employee["state"] == 'Putrajaya') echo ' selected="selected"'; ?>>Putrajaya</option>
-                                            <option value="Labuan" <?php if ($employee["state"] == 'Labuan') echo ' selected="selected"'; ?>>Labuan</option>
-                                        </select>
-                                    </div>
-                                    <div class="form-group col-md-4">
-                                        <label for="inputPostcode">Postcode</label>
-                                        <input type="text" class="form-control" id="inputPostcode" value="<?= $employee["postcode"]; ?>" name="postcode">
-                                    </div>
-                                </div>
-                                <div class="form-row">
-                                    <div class="form-group col-md-4">
                                         <label for="role">Roles</label>
                                         <select id="role" class="custom-select" name="role" value="<?= $employee["role"]; ?>" required>
                                             <option selected value="">Choose...</option>
@@ -98,20 +73,23 @@
                                 <input type="hidden" name="employee_id" value="<?= $employee['employeeID']; ?>">
                                 <button type="submit" class="btn btn-success float-right" name="update"><i class="fas fa-save"></i> Save</button>
                             </form>
-                    <?php
-                        } else {
-                            echo "<h4>No Such Id Found</h4>";
-                        }
-                    }
-                    ?>
                 </div>
             </div>
         </div>
     </div>
 </div>
 </div>
+
+<?php
+                        } else {
+                            echo "<h4>No Such Id Found</h4>";
+                        }
+                    }
+?>
 </div>
 </div>
+</div>
+
 
 <!--script for form validation-->
 <script>

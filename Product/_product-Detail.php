@@ -27,7 +27,7 @@
                 ' . $row["name"] . '
                 </h2>
                 <div class="col-12">';
-                    echo '<img class="img-thumbnail" src="' . $row["productPath"] . '"/>
+                    echo '<img class="img-thumbnail" src="' . $row["product_image"] . '"/>
 
                 </div>
                 
@@ -87,7 +87,7 @@
 
                 <div class="modal-body">
 
-                    <input type="hidden" name="delete_id" id="delete_id">
+                    <input type="hidden" name="delete_id" value="<?php echo $_GET['id'];?>">
 
                     <h5 class="text-center"> Are you sure want to delete?</h5>
                 </div>
