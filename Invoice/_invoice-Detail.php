@@ -58,7 +58,7 @@ $invoice = mysqli_fetch_assoc($run_query);
                         <address>
                             <strong><?php echo $customer_detail['name']; ?></strong><br>
                             <?php echo $customer_detail['address']; ?>,<br />
-                            <?php echo $customer_detail['postcode']; ?>, <?php echo $customer_detail['city']; ?>,<br> <?php echo $customer_detail['state']; ?><br />
+                            Email: <?php echo $customer_detail['email']; ?><br>
                             Phone: <?php echo $customer_detail['hpNo']; ?><br>
                         </address>
                     <?php
@@ -144,6 +144,7 @@ $invoice = mysqli_fetch_assoc($run_query);
                             $run_query = mysqli_query($connection, $all_invoice_detail_query);
                             if ($run_query) {
                                 $index_number = 1;
+                                $total_amount = 0.00;
                                 foreach ($run_query as $row) {
 
                             ?>
@@ -172,7 +173,8 @@ $invoice = mysqli_fetch_assoc($run_query);
                                                     }  ?> </td>
 
                                             <!--quantity-->
-                                            <td> <?php echo $row['quantity']; ?> </td>
+                                            <td> <?php $rowquantity = $row['quantity'];
+                                                        echo $rowquantity; ?> </td>
 
                                             <!--product unit price-->
                                             <?php
@@ -183,7 +185,9 @@ $invoice = mysqli_fetch_assoc($run_query);
                                             <td><?php
                                                 if ($product_price != null) {
                                                 ?>
-                                                    RM <?php echo $product_price['price']; ?>
+                                                    RM <?php  $furniture_price = $product_price['price'];
+                                                $rowprice = number_format((float)$furniture_price, 2, '.', '');
+                                                echo $rowprice; ?>
                                                 <?php
                                                 } else {
                                                     echo "<b>Product is either deleted or not exist.</b>";
@@ -192,7 +196,10 @@ $invoice = mysqli_fetch_assoc($run_query);
                                             <!--Subtotal-->
                                             <td class="text-right">
                                                 <b>
-                                                    RM <?php echo $row['subtotal']; ?>&nbsp&nbsp
+                                                    RM <?php $subtotal = $rowquantity * $product_price['price'];
+                                                            $subtotal = number_format((float)$subtotal, 2, '.', '');
+                                                            echo $subtotal;
+                                                            $total_amount += $subtotal; ?>&nbsp&nbsp
                                                 </b>
                                             </td>
 

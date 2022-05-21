@@ -58,7 +58,7 @@ $quotation = mysqli_fetch_assoc($run_query);
                         <address>
                             <strong><?php echo $customer_detail['name']; ?></strong><br>
                             <?php echo $customer_detail['address']; ?>,<br />
-                            <?php echo $customer_detail['postcode']; ?>, <?php echo $customer_detail['city']; ?>,<br> <?php echo $customer_detail['state']; ?><br />
+                            Email: <?php echo $customer_detail['email']; ?><br />
                             Phone: <?php echo $customer_detail['hpNo']; ?><br>
                         </address>
                     <?php
@@ -135,7 +135,7 @@ $quotation = mysqli_fetch_assoc($run_query);
                                 <th>Image</th>
                                 <th>Qty.</th>
                                 <th>Unit Price</th>
-                                <th class="text-right">Subtotal&nbsp&nbsp&nbsp&nbsp</th>
+                                <th class="">Subtotal</th>
                             </tr>
                         </thead>
                         <tr>
@@ -144,6 +144,7 @@ $quotation = mysqli_fetch_assoc($run_query);
                             $run_query = mysqli_query($connection, $all_quotation_detail_query);
                             if ($run_query) {
                                 $index_number = 1;
+                                $total_amount = 0.00;
                                 foreach ($run_query as $row) {
 
                             ?>
@@ -185,7 +186,7 @@ $quotation = mysqli_fetch_assoc($run_query);
                                             <!--image-->
                                             <?php
 
-                                            $get_product_image = "SELECT productPath FROM product WHERE productID = '$productID'";
+                                            $get_product_image = "SELECT product_image FROM product WHERE productID = '$productID'";
                                             $run_query = mysqli_query($connection, $get_product_image);
                                             $product_image = mysqli_fetch_array($run_query);
                                             ?>
@@ -193,7 +194,7 @@ $quotation = mysqli_fetch_assoc($run_query);
                                                 <?php
                                                 if ($product_image != null) { ?>
                                                     
-                                                <img class="img-fluid" style="" src="<?php echo $product_image["productPath"]; ?>">
+                                                <img class="img-fluid" style="" src="<?php echo $product_image["product_image"]; ?>">
                                                 
                                                 <?php
                                                 } else {
@@ -202,7 +203,8 @@ $quotation = mysqli_fetch_assoc($run_query);
                                             </td>
 
                                             <!--quantity-->
-                                            <td> <?php echo $row['quantity']; ?> </td>
+                                            <td> <?php $rowquantity = $row['quantity'];
+                                                        echo $rowquantity; ?> </td>
 
                                             <!--product unit price-->
                                             <?php
@@ -210,32 +212,18 @@ $quotation = mysqli_fetch_assoc($run_query);
                                             $run_query = mysqli_query($connection, $get_product_price);
                                             $product_price = mysqli_fetch_array($run_query);
                                             ?>
-                                            <td>
-                                                <?php
-                                                if ($product_price != null) {
-                                                ?>
-                                                    RM <?php echo $product_price['price']; ?>
-                                                <?php
-                                                } else {
-                                                    echo "<b>Product is either deleted or not exist.</b>";
-                                                }  ?>
-                                            </td>
+                                            <td>RM <?php 
+                                                $furniture_price = $product_price['price'];
+                                                $rowprice = number_format((float)$furniture_price, 2, '.', '');
+                                                echo $rowprice; ?> </td>
 
                                             <!--Subtotal-->
-                                            <td class="text-right">
-                                                <?php
-                                                $subtotal = $row['subtotal'];
-                                                if ($subtotal != null) {
-                                                ?>
-                                                    <b>
-                                                        RM <?php echo $row['subtotal']; ?>&nbsp&nbsp
-                                                    </b>
-                                                <?php
-                                                } else {
-                                                    echo "<b>Product is either deleted or not exist.</b>";
-                                                }  ?>
-
-                                            </td>
+                                            <td><b>RM <?php
+                                                            $subtotal = $rowquantity * $product_price['price'];
+                                                            $subtotal = number_format((float)$subtotal, 2, '.', '');
+                                                            echo $subtotal;
+                                                            $total_amount += $subtotal;
+                                                            ?></b></td>
 
                                         </tr>
                                     </tbody>
@@ -278,18 +266,11 @@ $quotation = mysqli_fetch_assoc($run_query);
                             <tr>
 
                                 <!--total amount-->
-                                <th class="">Total:</th>
-                                <?php
-                                $get_quotation_total = "SELECT total_amount FROM quotation WHERE quotationID = '$quotationID'";
-                                $run_query = mysqli_query($connection, $get_quotation_total);
-                                $quotation_total = mysqli_fetch_array($run_query);
-                                $total_amount = $quotation_total['total_amount'];
-                                ?>
-                                <td class="pl-0 ml-0 text-right">
-                                    <b>
-                                        RM <?php echo "$total_amount"; ?>&nbsp&nbsp
-                                    </b>
-                                </td>
+                                <th>Total:</th>
+                                    <?php
+                                    $total_amount = number_format((float)$total_amount, 2, '.', '');
+                                    ?>
+                                    <td><b>RM <?php echo $total_amount; ?></b></td>
                             </tr>
                             <tr>
 
@@ -354,8 +335,6 @@ $quotation = mysqli_fetch_assoc($run_query);
                             </form>
                         <?php
                         }
-
-                        ?>
 
                         ?>
                 </div>

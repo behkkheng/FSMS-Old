@@ -73,7 +73,7 @@ if ($_SESSION['run_one_time'] == 1) {
                                 <address>
                                     <strong><?php echo $customer_detail['name']; ?></strong><br>
                                     <?php echo $customer_detail['address']; ?>,<br />
-                                    <?php echo $customer_detail['postcode']; ?>, <?php echo $customer_detail['city']; ?>,<br> <?php echo $customer_detail['state']; ?><br />
+                                    Email: <?php echo $customer_detail['email']; ?><br>
                                     Phone: <?php echo $customer_detail['hpNo']; ?><br>
                                 </address>
                             <?php
@@ -143,13 +143,13 @@ if ($_SESSION['run_one_time'] == 1) {
 
                                 <div class="col-sm-6">
 
-                                <?php $poNo = $invoice['poNo'] ?>
+                                    <?php $poNo = $invoice['poNo'] ?>
 
                                     <input type="text" class="form-control form-control-sm mol-md-6" id="poNo" name="poNo" value="<?php echo $poNo; ?>">
-                                    
+
                                 </div>
                             </div>
-                            
+
                         </div>
 
                         <!--Cancel status-->
@@ -189,6 +189,7 @@ if ($_SESSION['run_one_time'] == 1) {
                                 $all_invoice_detail = mysqli_query($connection, $all_invoice_detail_query);
                                 if ($all_invoice_detail) {
                                     $index_number = 1;
+                                    $total_amount = 0.00;
                                     foreach ($all_invoice_detail as $row) {
 
                                 ?>
@@ -216,7 +217,8 @@ if ($_SESSION['run_one_time'] == 1) {
                                                     }  ?> </td>
 
                                                 <!--quantity-->
-                                                <td> <?php echo $row['quantity']; ?> </td>
+                                                <td> <?php $rowquantity = $row['quantity'];
+                                                        echo $rowquantity; ?> </td>
 
                                                 <!--product unit price-->
                                                 <?php
@@ -226,13 +228,24 @@ if ($_SESSION['run_one_time'] == 1) {
                                                 ?>
                                                 <td><?php
                                                     if ($product_price != null) {
-                                                        echo $product_price['price'];
+                                                    ?>
+                                                        RM <?php $furniture_price = $product_price['price'];
+                                                            $rowprice = number_format((float)$furniture_price, 2, '.', '');
+                                                            echo $rowprice; ?>
+                                                    <?php
                                                     } else {
                                                         echo "<b>Product is either deleted or not exist.</b>";
                                                     }  ?></td>
 
                                                 <!--Subtotal-->
-                                                <td><b>RM <?php echo $row['subtotal']; ?></b></td>
+                                                <td class="">
+                                                    <b>
+                                                        RM <?php $subtotal = $rowquantity * $product_price['price'];
+                                                            $subtotal = number_format((float)$subtotal, 2, '.', '');
+                                                            echo $subtotal;
+                                                            $total_amount += $subtotal; ?>&nbsp&nbsp
+                                                    </b>
+                                                </td>
 
                                                 <!--delete button-->
                                                 <td class="text-right">
@@ -286,17 +299,10 @@ if ($_SESSION['run_one_time'] == 1) {
                                     <!--total amount-->
                                     <th>Total:</th>
                                     <?php
-                                    $total_amount = "0.00";
-                                    $invoiceDetail = "SELECT subtotal FROM invoiceDetail WHERE invoiceID='$invoiceID'";
-                                    $queryResult = mysqli_query($connection, $invoiceDetail);
-                                    $amount = '0.00';
-                                    if ($queryResult) {
-                                        foreach ($queryResult as $row) {
-
-                                            $amount = $amount + $row['subtotal'];
-                                            $total_amount = number_format((float)$amount, 2, '.', '');
-                                        }
-                                    }
+                                    $get_invoice_total = "SELECT total_amount FROM invoice WHERE invoiceID = '$invoiceID'";
+                                    $run_query = mysqli_query($connection, $get_invoice_total);
+                                    $invoice_total = mysqli_fetch_array($run_query);
+                                    $total_amount = $invoice_total['total_amount'];
                                     ?>
                                     <td><b>RM <?php echo "$total_amount"; ?></b></td>
 
@@ -528,38 +534,6 @@ if ($_SESSION['run_one_time'] == 1) {
                             <label for="inputAddress">Address</label>
                             <textarea class="form-control" id="inputAddress" rows="3" name="address"></textarea>
                         </div>
-                        <div class="form-row">
-                            <div class="form-group col-md-4">
-                                <label for="inputCity">City</label>
-                                <input type="text" class="form-control" id="inputCity" name="city">
-                            </div>
-
-                            <div class="form-group col-md-4">
-                                <label for="inputState">State</label>
-                                <select id="inputState" class="custom-select" name="state">
-                                    <option selected value="">Choose...</option>
-                                    <option value="Kedah">Kedah</option>
-                                    <option value="Penang">Penang</option>
-                                    <option value="Kelantan">Kelantan</option>
-                                    <option value="Perak">Perak</option>
-                                    <option value="Pahang">Pahang</option>
-                                    <option value="Melaka">Melaka</option>
-                                    <option value="Selangor">Selangor</option>
-                                    <option value="Terengganu">Terengganu</option>
-                                    <option value="Johor">Johor</option>
-                                    <option value="Perlis">Perlis</option>
-                                    <option value="Sarawak">Sarawak</option>
-                                    <option value="Sabah">Sabah</option>
-                                    <option value="Kuala Lumpur">Kuala Lumpur</option>
-                                    <option value="Putrajaya">Putrajaya</option>
-                                    <option value="Labuan">Labuan</option>
-                                </select>
-                            </div>
-                            <div class="form-group col-md-4">
-                                <label for="inputPostcode">Postcode</label>
-                                <input type="text" class="form-control" id="inputPostcode" name="postcode">
-                            </div>
-                        </div>
 
                     </div>
 
@@ -630,9 +604,7 @@ if (isset($_POST['addInvoiceDetail'])) {
     $run_query = mysqli_query($connection, $get_product_price_query);
     $price = mysqli_fetch_assoc($run_query);
 
-    $subtotal = $quantity * $price['price'];
-
-    $insert_invoice_detail_query = "INSERT INTO `invoicedetail` (`invoiceID`, `quantity`, `subtotal`, `productID`) VALUES ('$invoiceID', '$quantity', '$subtotal', '$product')";;
+    $insert_invoice_detail_query = "INSERT INTO `invoicedetail` (`invoiceID`, `quantity`, `productID`) VALUES ('$invoiceID', '$quantity', '$product')";;
 
     $run_query = mysqli_query($connection, $insert_invoice_detail_query);
 
@@ -652,11 +624,9 @@ if (isset($_POST['createCustomer'])) {
     $name = $_POST['name'];
     $hpNo = $_POST['hpNo'];
     $address = $_POST['address'];
-    $city = $_POST['city'];
-    $state = $_POST['state'];
-    $postcode = $_POST['postcode'];
+    $email = $_POST['email'];
 
-    $create_customer_query = "INSERT INTO `customer` (`name`, `hpNo`, `address`, `city`, `state`, `postcode`) VALUES ('$name', '$hpNo', '$address', '$city', '$state', '$postcode')";
+    $create_customer_query = "INSERT INTO `customer` (`name`, `hpNo`, `address`, `email`) VALUES ('$name', '$hpNo', '$address', '$email')";
     $run_query = mysqli_query($connection, $create_customer_query);
 
     echo "<meta http-equiv='refresh' content='0'>";

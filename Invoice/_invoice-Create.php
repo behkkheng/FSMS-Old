@@ -70,10 +70,10 @@ if (isset($invoice)) {
 
                         ?>
                             <address>
-                                <strong><?php echo $customer_detail['name']; ?></strong><br>
-                                <?php echo $customer_detail['address']; ?>,<br />
-                                <?php echo $customer_detail['postcode']; ?>, <?php echo $customer_detail['city']; ?>,<br> <?php echo $customer_detail['state']; ?><br />
-                                Phone: <?php echo $customer_detail['hpNo']; ?><br>
+                            <strong><?php echo $customer_detail['name']; ?></strong><br>
+                            <?php echo $customer_detail['address']; ?>,<br />
+                            Email: <?php echo $customer_detail['email']; ?><br>
+                            Phone: <?php echo $customer_detail['hpNo']; ?><br>
                             </address>
 
 
@@ -131,10 +131,10 @@ if (isset($invoice)) {
                                 <div class="col-sm-6">
 
                                     <input type="text" class="form-control form-control-sm mol-md-6" id="poNo" name="poNo">
-                                    
+
                                 </div>
                             </div>
-                            
+
                         </div>
 
                         <!--Cancel status-->
@@ -174,6 +174,7 @@ if (isset($invoice)) {
                                 $all_invoice_detail = mysqli_query($connection, $all_invoice_detail_query);
                                 if ($all_invoice_detail) {
                                     $index_number = 1;
+                                    $total_amount = 0.00;
                                     foreach ($all_invoice_detail as $row) {
 
                                 ?>
@@ -196,7 +197,8 @@ if (isset($invoice)) {
                                                 <td> <?php echo $product_name["name"]; ?> </td>
 
                                                 <!--quantity-->
-                                                <td> <?php echo $row['quantity']; ?> </td>
+                                                <td> <?php $rowquantity = $row['quantity'];
+                                                        echo $rowquantity; ?> </td>
 
                                                 <!--product unit price-->
                                                 <?php
@@ -204,10 +206,18 @@ if (isset($invoice)) {
                                                 $run_query = mysqli_query($connection, $get_product_price);
                                                 $product_price = mysqli_fetch_assoc($run_query);
                                                 ?>
-                                                <td> <?php echo $product_price['price']; ?> </td>
+                                                <td>RM <?php 
+                                                $furniture_price = $product_price['price'];
+                                                $rowprice = number_format((float)$furniture_price, 2, '.', '');
+                                                echo $rowprice; ?> </td>
 
                                                 <!--Subtotal-->
-                                                <td><b>RM <?php echo $row['subtotal']; ?></b></td>
+                                                <td><b>RM <?php
+                                                            $subtotal = $rowquantity * $product_price['price'];
+                                                            $subtotal = number_format((float)$subtotal, 2, '.', '');
+                                                            echo $subtotal;
+                                                            $total_amount += $subtotal;
+                                                            ?></b></td>
 
                                                 <!--delete button-->
                                                 <td class="text-right">
@@ -261,19 +271,9 @@ if (isset($invoice)) {
                                     <!--total amount-->
                                     <th>Total:</th>
                                     <?php
-                                    $total_amount = "0.00";
-                                    $invoiceDetail = "SELECT subtotal FROM invoiceDetail WHERE invoiceID='$invoiceID'";
-                                    $queryResult = mysqli_query($connection, $invoiceDetail);
-                                    $amount = '0.00';
-                                    if ($queryResult) {
-                                        foreach ($queryResult as $row) {
-
-                                            $amount = $amount + $row['subtotal'];
-                                            $total_amount = number_format((float)$amount, 2, '.', '');
-                                        }
-                                    }
+                                    $total_amount = number_format((float)$total_amount, 2, '.', '');
                                     ?>
-                                    <td><b>RM <?php echo "$total_amount"; ?></b></td>
+                                    <td><b>RM <?php echo $total_amount; ?></b></td>
 
                                 </tr>
                             </table>
@@ -609,7 +609,7 @@ if (isset($_POST['createCustomer'])) {
     $state = $_POST['state'];
     $postcode = $_POST['postcode'];
 
-    $create_customer_query = "INSERT INTO `customer` (`name`, `hpNo`, `address`, `city`, `state`, `postcode`) VALUES ('$name', '$hpNo', '$address', '$city', '$state', '$postcode')";
+    $create_customer_query = "INSERT INTO `customer` (`name`, `hpNo`, `address`, `email`) VALUES ('$name', '$hpNo', '$address', '$email')";
     $run_query = mysqli_query($connection, $create_customer_query);
 
     echo "<meta http-equiv='refresh' content='0'>";
@@ -632,7 +632,7 @@ if (isset($_POST['createInvoice'])) {
     $run_query = mysqli_query($connection, $create_invoice_query);
 
     if ($run_query) {
-        $_SESSION['invoice_customerID'] = "";                                   
+        $_SESSION['invoice_customerID'] = "";
         echo ("<script>location.href = 'Invoice-Index.php';</script>");
         exit();
     } else {
