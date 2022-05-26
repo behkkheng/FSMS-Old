@@ -76,7 +76,7 @@
 
                                 <input type="hidden" value="<?= $product["productID"]; ?>" name="id">
 
-                                <button type="submit" class="btn btn-primary float-right" name="update"><i class="fas fa-pencil-alt"></i> Edit</button>
+                                <button type="submit" class="btn btn-success float-right" name="update"><i class="fas fa-save"></i> Save</button>
                             </form>
                     <?php
                         } else {
