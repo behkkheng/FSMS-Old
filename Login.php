@@ -92,7 +92,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                     <!--username-->
                     <div class="form-group">
                         <div class="input-group mb-3">
-                            <input asp-for="Email" class="form-control" placeholder="Email" name="username" required>
+                            <input asp-for="Email" class="form-control" placeholder="Username" name="username" required>
                             <div class="input-group-append">
                                 <div class="input-group-text">
                                     <span class="fas fa-envelope"></span>
