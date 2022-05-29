@@ -49,7 +49,8 @@ if (isset($_POST['update'])) {
                 echo "File is an image - " . $check["mime"] . ".";
                 $uploadOk = 1;
             } else {
-                echo "File is not an image.";
+                echo "<script>alert('Sorry, file is not an image.');
+        window.location.href = window.history.go(-1);</script>";
                 $uploadOk = 0;
             }
         }
@@ -77,7 +78,8 @@ if (isset($_POST['update'])) {
 
         // Check if $uploadOk is set to 0 by an error
         if ($uploadOk == 0) {
-            echo "Sorry, your file was not uploaded.";
+            echo "<script>alert('Sorry, only JPG, JPEG, PNG & GIF files are allowed.');
+        window.location.href = window.history.go(-1);;</script>";
             // if everything is ok, try to upload file
         } else {
             $name = $_POST['name'];
