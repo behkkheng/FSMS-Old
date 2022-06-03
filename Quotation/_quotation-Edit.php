@@ -386,7 +386,7 @@ if ($_SESSION['run_one_time'] == 1) {
                         <!--Product-->
                         <div class="form-group col-md-6">
                             <label for="product_name">Product</label>
-                            <select class="form-control" id="product_name" name="product">
+                            <select class="form-control" id="product_name" name="product" required>
                                 <?php
                                 $show_product_name_query = "SELECT name, quantity, productID FROM product";
                                 $query_run = mysqli_query($connection, $show_product_name_query);

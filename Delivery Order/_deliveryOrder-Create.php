@@ -132,10 +132,10 @@ if (isset($deliveryOrder)) {
                                 <div class="col-sm-6">
 
                                     <input type="text" class="form-control form-control-sm mol-md-6" id="poNo" name="poNo">
-                                    
+
                                 </div>
                             </div>
-                            
+
                         </div>
 
                         <!--Cancel status-->
@@ -357,7 +357,7 @@ if (isset($deliveryOrder)) {
                         <!--Product-->
                         <div class="form-group col-md-6">
                             <label for="product_name">Product</label>
-                            <select class="form-control" id="product_name" name="product">
+                            <select class="form-control" id="product_name" name="product" required>
                                 <?php
                                 $show_product_name_query = "SELECT name, productID FROM product";
                                 $query_run = mysqli_query($connection, $show_product_name_query);
